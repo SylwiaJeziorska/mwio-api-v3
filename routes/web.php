@@ -14,9 +14,12 @@ use App\Http\Controllers\IoController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 Route::resource('ios',IoController::class);
 //Route::get('/ios', 'HomeController@index')->name('home');
 
 
+
+Auth::routes(['verify' => true]);
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

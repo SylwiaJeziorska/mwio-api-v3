@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Database\Eloquent\Model;
 use Grimzy\LaravelMysqlSpatial\Eloquent\SpatialTrait;
 /**
@@ -99,10 +100,13 @@ class Io extends Model
 
     public function getSituationAttribute($record)
     {
-        if(!$record==null){
-            $situationCoord = ['lat' => $record->getLat(), 'lon' => $record->getLng()];
+        $p = Point::fromWKT($record);
+
+        if(!$record==null && !$p==null){
+            $situationCoord = ['lat' => $p->getLat(), 'lon' => $p->getLng()];
             return $situation =["coordinates" => $situationCoord];
         }
+
 
     }
 
