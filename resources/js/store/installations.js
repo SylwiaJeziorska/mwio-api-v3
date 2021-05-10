@@ -16,11 +16,23 @@ export default {
     state: {
        installations: null,
         filters: [[], [], []],
+        io: {},
+        marker: {},
+        user:{}
 
     },
     getters: {
         installations(state) {
             return state.installations;
+        },
+        singleInstallation(state) {
+            return state.io;
+        },
+        marker(state) {
+            return state.marker;
+        },
+        user(state) {
+            return state.user;
         },
     },
     mutations: {
@@ -92,12 +104,35 @@ export default {
         },
         SET_FILTERS(state,filters){
             state.filters = filters;
-        }
+        },
+        SET_SINGLE_IO( state, io){
+            state.io = io.data;
+        },
+        SET_MARKER(state, io){
+            state.marker = L.latLng(
+                io.coordinates.lat,
+                io.coordinates.lon
+            );
+        },
+        SET_IO_BY_ID( state, id){
+            let arrayOfInstallation = state.installations.geojson.features;
+            let io = arrayOfInstallation.filter(io => io.id === id);
+            state.io =  io[0];
+            state.marker = L.latLng(
+                io[0].geometry.coordinates[1],
+                io[0].geometry.coordinates[0]
+            );
+        },
     },
     actions: {
         async installations({ commit }){
-            let response = await axios.get('/ios');
-            commit('SET_INSTALLATIONS', response);
-        }
+            await axios.get('/ios').then((response) => {
+                commit('SET_INSTALLATIONS', response);
+
+            })
+        },
+        async getIO( {commit }, id) {
+            commit('SET_IO_BY_ID', id);
+        },
     },
 };

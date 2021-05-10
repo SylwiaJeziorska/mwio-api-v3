@@ -30,7 +30,7 @@ class IoUserController extends Controller
      */
     public function index(Index $request)
     {
-       
+
         //return view('pages.io_user.index', ['records' => IoUser::paginate(10)]);
     }    /**
      * Display the specified resource.
@@ -39,11 +39,18 @@ class IoUserController extends Controller
      * @param  IoUser  $iouser
      * @return \Illuminate\Http\Response
      */
-    public function show(Show $request, IoUser $iouser)
+    public function show(Show $request, Io $io)
     {
-        return view('pages.io_user.show', [
-                'record' =>$iouser,
-        ]);
+        $relatedMedia = $io->media()->get();
+        $contributors = [];
+        foreach ($io->user as $user) {
+            $user->pivot->user_id;
+
+            $getName = User::find($user->pivot->user_id);
+            $name = $getName->name;
+            array_push($contributors, $name);
+        }
+        $io->load('media');
 
     }    /**
      * Show the form for creating a new resource.
@@ -70,7 +77,7 @@ class IoUserController extends Controller
         $model->fill($request->all());
 
         if ($model->save()) {
-            
+
             session()->flash('app_message', 'IoUser saved successfully');
             return redirect()->route('io_user.index');
             } else {
@@ -103,7 +110,7 @@ class IoUserController extends Controller
         $iouser->fill($request->all());
 
         if ($iouser->save()) {
-            
+
             session()->flash('app_message', 'IoUser successfully updated');
             return redirect()->route('io_user.index');
             } else {

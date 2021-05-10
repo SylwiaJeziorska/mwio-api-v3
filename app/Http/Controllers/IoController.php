@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Io;
@@ -44,10 +45,17 @@ class IoController extends Controller
      */
     public function show(Show $request, Io $io)
     {
-        return view('pages.io.show', [
-                'record' =>$io,
-        ]);
+       // $relatedMedia = $io->media()->get();
+        $contributors = [];
+        foreach ($io->user as $user) {
+            $user->pivot->user_id;
 
+            $getName = User::find($user->pivot->user_id);
+            $name = $getName->name;
+            array_push($contributors, $name);
+        }
+        $io->load('media');
+        return response()->json($io);
     }    /**
      * Show the form for creating a new resource.
      *

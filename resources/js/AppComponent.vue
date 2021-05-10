@@ -14,6 +14,7 @@ import { mapActions } from 'vuex';
         components: {NavComponent},
         mounted() {
             this.getInstallations();
+            this.$store.state.installations.user = this.$attrs.user;
         },
         methods: {
             ...mapActions({

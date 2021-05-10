@@ -17,12 +17,12 @@
 import PopupContent from "../components/PopupContent";
 import {mapGetters} from "vuex";
 
-var greenIcon = L.icon({
+let greenIcon = L.icon({
     iconUrl: "../images/vendor/leaflet/dist/marker-vert.png",
     iconAnchor: [16, 37],
     popupAnchor: [0, -28],
 });
-var redIcon = L.icon({
+let redIcon = L.icon({
     iconUrl: "/images/vendor/leaflet/dist/marker-orange.png",
     iconAnchor: [16, 37],
     popupAnchor: [0, -28],

@@ -109,6 +109,15 @@ class Io extends Model
 
 
     }
+    public function user()
+    {
+        return $this->belongsToMany(User::class, 'io_user', 'io_id', 'user_id');
+    }
+
+    public function media()
+    {
+        return $this->hasMany(Medium::class);
+    }
 
 
 }

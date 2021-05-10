@@ -6,7 +6,7 @@
         <p>
            {{lieu}}
         </p>
-
+        <p @click="link" >hgiorjopij</p>
         <a class="voir text-light btn btn-block btn-success" v-bind:href="url">Voir </a>
 
 
@@ -15,15 +15,21 @@
 </template>
 
 <script>
+import router from "../router";
     export default {
         name: 'GeoJson2Popup',
         props: ['id', 'date', 'origin', 'lieu'],
         data: function () {
             return {
-                url: "/#/io/" + this.id,
+                url: "/installation/" + this.id,
                 img: 'imgs/' + this.origin + '.jpg'
             }
         },
+        methods: {
+            link(){
+                router.push({ name: 'singleInstallation', params: { id: this.id } })
+            }
+        }
     }
 </script>
 <style scoped>

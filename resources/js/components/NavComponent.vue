@@ -10,6 +10,9 @@
                             >home</router-link
                             >
                         </li>
+                        <router-link :to="{ name: 'Admin' }"
+                        ><span>hoidewhdoi</span></router-link
+                        >
                     </ul>
                 </nav>
             </div>
@@ -21,7 +24,6 @@
 export default {
     name: 'NavComponent',
     mounted() {
-        console.log('Component mounted.')
     }
 }
 </script>
