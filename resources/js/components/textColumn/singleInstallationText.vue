@@ -240,8 +240,8 @@
             >
                 Contributeurs
             </h2>
-            <div id="contributors" class="collapse ml-4 mr-4 pl-4">
-                <p v-for="item in io.user">{{ item.name }}</p>
+            <div v-if="contributors" id="contributors" class="collapse ml-4 mr-4 pl-4">
+                <p v-for="item in contributors">{{ item }}</p>
             </div>
         </div>
         <div v-if="user">for admin</div>
@@ -263,6 +263,7 @@ export default {
     },
     filters: {
         formatDate(value) {
+            alert(value)
             if (value) {
                 return moment(String(value)).format("DD/MM/YYYY");
             }
@@ -297,6 +298,13 @@ export default {
         ...mapGetters({
             user: 'installations/user',
         }),
+        media: function (){
+            return this.$store.state.installations.media;
+        },
+        contributors: function (){
+            return this.$store.state.installations.contributors;
+
+        }
     },
     mounted() {
 

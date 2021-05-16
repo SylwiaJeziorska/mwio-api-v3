@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Medium;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Io;
@@ -32,12 +34,12 @@ class IoController extends Controller
      */
     public function index(Index $request)
     {
-        $test = Io::all();
-        return response()->json($test);
+        $ios = Io::all();
+        return response()->json($ios);
     }
 
       /**
-     * Display the specified resource.
+     * Get the media and contributors related to an installation.
      *
      * @param  Show  $request
      * @param  Io  $io
@@ -45,17 +47,19 @@ class IoController extends Controller
      */
     public function show(Show $request, Io $io)
     {
-       // $relatedMedia = $io->media()->get();
+        $media = $io->media()->get();
         $contributors = [];
         foreach ($io->user as $user) {
             $user->pivot->user_id;
-
             $getName = User::find($user->pivot->user_id);
             $name = $getName->name;
             array_push($contributors, $name);
         }
-        $io->load('media');
-        return response()->json($io);
+        $response =[];
+        array_push($response, $media);
+        array_push($response, $contributors);
+        return response()->json($response);
+
     }    /**
      * Show the form for creating a new resource.
      *
@@ -78,32 +82,40 @@ class IoController extends Controller
      */
     public function store(Store $request)
     {
-        $model=new Io;
-        $model->fill($request->all());
 
+        $fieldsData = json_decode($request->fields, TRUE);
+        //$class = implode(',', (array) $fieldsData['classe']);
+        $model= new Io;
+        $model->fill($fieldsData);
+      // $model->classe = $class;
+        $model->save();
+
+        if($medias = $request->file()){
+            $this->crateMedia($medias, $model);
+        }
         if ($model->save()) {
 
             session()->flash('app_message', 'Io saved successfully');
-            return redirect()->route('io.index');
+           // return redirect()->route('io.index');
             } else {
                 session()->flash('app_message', 'Something is wrong while saving Io');
             }
-        return redirect()->back();
-    } /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  Edit  $request
-     * @param  Io  $io
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Edit $request, Io $io)
-    {
-
-        return view('pages.io.edit', [
-            'model' => $io,
-
-            ]);
-    }    /**
+       // return redirect()->back();
+    }
+//    /**
+//     * Show the form for editing the specified resource.
+//     *
+//     * @param  Edit  $request
+//     * @param  Io  $io
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function edit(Edit $request, Io $io)
+//    {
+//        dd($request);
+//        return response()->json('huihiuoihiu');
+//
+//    }
+    /**
      * Update a existing resource in storage.
      *
      * @param  Update  $request
@@ -112,15 +124,21 @@ class IoController extends Controller
      */
     public function update(Update $request,Io $io)
     {
-        $io->fill($request->all());
+        $fieldsData = json_decode($request->fields, TRUE);
+
+        $io->fill($fieldsData);
+        if($medias = $request->file()){
+            $this->crateMedia($medias, $io);
+        }
 
         if ($io->save()) {
 
             session()->flash('app_message', 'Io successfully updated');
-            return redirect()->route('io.index');
+          //  return redirect()->route('io.index');
             } else {
                 session()->flash('app_error', 'Something is wrong while updating Io');
             }
+
         return redirect()->back();
     }    /**
      * Delete a  resource from  storage.
@@ -139,5 +157,24 @@ class IoController extends Controller
             }
 
         return redirect()->back();
+    }
+
+    public function crateMedia($medias, $io) {
+        foreach ($medias as $images) {
+            foreach ($images as $image){
+                $destinationPath = 'img';
+                $file_name = time() . '-' . $image->getClientOriginalName();
+                $image->move($destinationPath, $file_name);
+                $img = new Medium;
+                $id = $io->id;
+                $img->io_id = $id;
+                $img->original_name = $image->getClientOriginalName();
+                $img->file_name = $file_name;
+                $img->type = 'img';
+                $img->save();
+            }
+
+
+        }
     }
 }

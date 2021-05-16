@@ -21,7 +21,7 @@
 import SingleInstallationText from "../components/textColumn/singleInstallationText";
 
 import { mapState }  from '../components/mixins/mapStateMixin'
-import SingleInstallationMap from "../maps/singleInstallationMap";
+import SingleInstallationMap from "../components/maps/singleInstallationMap";
 import { mapActions } from 'vuex';
 import {mapGetters} from "vuex";
 

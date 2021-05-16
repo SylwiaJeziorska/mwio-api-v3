@@ -17,9 +17,9 @@
 
 <script>
 import FilterOption from "../components/filterOption";
-import AllInstallationMap from "../maps/AllInstallationMap";
+import AllInstallationMap from "../components/maps/AllInstallationMap";
 import { mapGetters } from 'vuex';
-import FilteredInstallationMap from "../maps/filteredInstallationMap";
+import FilteredInstallationMap from "../components/maps/filteredInstallationMap";
 
 export default {
     name: 'Home',

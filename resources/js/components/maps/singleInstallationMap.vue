@@ -8,7 +8,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import { mapState }  from '../components/mixins/mapStateMixin'
+import { mapState }  from '../mixins/mapStateMixin'
 export default {
     name: 'singleInstallationMap',
     mixins: [mapState],
@@ -29,9 +29,7 @@ export default {
             this.settCurrentZoom();
         });
     },
-    created() {
-        alert('vvvvvv');
-    }
+
 };
 </script>
 <style>

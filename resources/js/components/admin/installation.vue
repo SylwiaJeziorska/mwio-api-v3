@@ -131,8 +131,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="date_releve">Date de déclaration</label>
-                        <input type="date" class="form-control input-date" v-model="fields.date_releve" id="date_releve" />
+                        <label for="date_releve">Date de déclaration</label> <br/>
+                        {{fields.date_releve | formatDate}}
+                        <input type="date" class="form-control input-date" v-model="fields.date_releve" id="date_releve"/>
                     </div>
                     <div class="form-group">
                         <label for="lieu_dit">Lieu Dit</label>
@@ -342,19 +343,13 @@
                         <div>
                             <!-- Carousel items have `.embed-responsive-item` -->
                             <div class="row">
-                                <div :id="'id-' + img.id" class="p-2" v-for="(img, idx) in io.media">
+                                <div :id="'id-' + img.id" class="p-2" v-for="(img, idx) in media">
                                     <p class="pl-3" @click="deletImg(img.id)">
                                         <span class="deleteFile float-right">&#x274C;</span>
                                     </p>
                                     <img height="200px" v-bind:src="'/img/' + img.file_name" />
                                     <div>
                                         <h5>{{ img.original_name }}</h5>
-                                        <!--
-                        <input class="browse" style="display: none" @change="onImageChange" ref="fileInput" type="file">
-                        <p v-for="img in filesNames" @click='deleteFile(item)'>{{item}}
-                            <span class="deleteFile"> &#x274C;</span>
-                        </p>
-                      -->
                                     </div>
                                 </div>
                             </div>
@@ -393,16 +388,18 @@
             </div>
         </div>
         <div class="col-md-8">
-<!--            <update_io @mymarker="addMarker($event)" :markers1="markers"></update_io>-->
             <single-installation-map :io="true" :lat-lng="marker"></single-installation-map>
+            <new-installation-map :test="marker"> </new-installation-map>
         </div>
     </div>
 </template>
 <script>
-import SingleInstallationMap from "../../maps/singleInstallationMap";
+import SingleInstallationMap from "../maps/singleInstallationMap";
+import moment from "moment";
+import NewInstallationMap from "../maps/newInstallationMap";
 export default {
     name: "installation",
-    components: {SingleInstallationMap},
+    components: {NewInstallationMap, SingleInstallationMap},
     props: ["fields", "marker"],
     data() {
         return {
@@ -487,31 +484,15 @@ export default {
             ],
             zoom: 6,
             center: "",
+            testy:'10/10/2021'
         };
     },
     methods: {
-        openIo: function() {
-
-        },
         deleteFile: function() {
             // this.files.splice(this.files.indexOf(item), 1);
             let test = this.filesNames.indexOf(item);
             this.filesNames.splice(this.files.indexOf(item), 1);
             this.files.splice(test);
-        },
-        addMarker: function(e) {
-            // if (this.markers.length !== 0) {
-            //     this.markers = [];
-            // }
-            // this.markers.push({
-            //     position: {
-            //         "lat": e.latlng.lat,
-            //         "lng": e.latlng.lng
-            //     }
-            // });
-            //  console.log(e);
-            // this.fields.situation =
-            //     "POINT(" + e.latlng.lng + " " + e.latlng.lat + ")";
         },
         onImageChange(event) {
             // this.files =event.target.files;
@@ -542,18 +523,16 @@ export default {
             }
             fd.append("IoFiles", this.files);
             fd.append("fields", JSON.stringify(this.fields));
-            // console.log('file Object:==>',fd);
-            //console.log(fd);
             fd.append("_method", "PATCH");
             axios
-                .post("api/io/" + this.fields.id, fd, {
+                .post("/ios/" + this.fields.id, fd, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
                 })
                 .then(function(response) {
                     currentObj.output = response.data;
-                    window.location.href = "/administration-io#";
+                  //  window.location.href = "/administration-io#";
                 })
                 .catch(function(error) {
                     console.log(error);
@@ -561,7 +540,7 @@ export default {
                 });
             this.ios = false;
             this.ioList = true;
-            location.reload();
+           // location.reload();
         },
         deletImg(item) {
             this.fields.delete.push(item);
@@ -608,7 +587,43 @@ export default {
             this.ioList = true;
             location.reload();
         },
+        formatClasse(value) {
+            var search_tags = value.split(",");
+            var myclass = this.classes;
+            var classeArray = [];
+            for (var i = 0; i < search_tags.length; i++) {
+                myclass.filter(function(elem) {
+                    if (elem.text == search_tags[i]) {
+                        elem.enabled = true;
+                        classeArray.push(search_tags[i]);
+                    }
+                });
+            }
+            console.log(classeArray);
+            return classeArray;
+        },
     },
+    created() {
+        this.formatClasse(this.fields.classe);
+        this.fields.delete = [];
+    },
+    computed: {
+        media: function (){
+            return this.$store.state.installations.media;
+        },
+        contributors: function (){
+            return this.$store.state.installations.contributors;
+
+        },
+    },
+    filters: {
+        formatDate(value) {
+            if (value) {
+                return moment(String(value)).format("MM/DD/YYYY");
+            }
+        },
+    }
+
 
 };
 </script>

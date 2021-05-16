@@ -10,6 +10,12 @@
                             >home</router-link
                             >
                         </li>
+                        <li class="scrolly" href="#header">
+                            <router-link
+                                to="/new"
+                            >new</router-link
+                            >
+                        </li>
                         <router-link :to="{ name: 'Admin' }"
                         ><span>hoidewhdoi</span></router-link
                         >

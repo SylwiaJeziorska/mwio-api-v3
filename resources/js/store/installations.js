@@ -18,7 +18,9 @@ export default {
         filters: [[], [], []],
         io: {},
         marker: {},
-        user:{}
+        user: {},
+        media: [],
+        contributors: []
 
     },
     getters: {
@@ -37,7 +39,6 @@ export default {
     },
     mutations: {
         SET_INSTALLATIONS(state, installations){
-           // state.installations = installations.data;
             let features = [];
             for (let i = 0; i < installations.data.length; i++) {
                 var props = installations.data[i];
@@ -47,7 +48,7 @@ export default {
                     type: 'Feature',
                     geometry: {
                         type: 'Point',
-                        coordinates: [installations.data[i].situation.coordinates.lon ,installations.data[i].situation.coordinates.lat]
+                        coordinates: [installations.data[i].situation.coordinates[0] ,installations.data[i].situation.coordinates[1]]
                     },
                     properties: props,
                     id: installations.data[i].id,
@@ -123,16 +124,35 @@ export default {
                 io[0].geometry.coordinates[0]
             );
         },
+        SET_IO_MEDIA(state, media){
+            state.media = media;
+        },
+        SET_CONTRIBUTORS( state, contributors){
+            state.contributors = contributors;
+        }
     },
     actions: {
         async installations({ commit }){
             await axios.get('/ios').then((response) => {
                 commit('SET_INSTALLATIONS', response);
-
             })
         },
-        async getIO( {commit }, id) {
-            commit('SET_IO_BY_ID', id);
+        async getIO( { commit }, id) {
+            commit('SET_IO_BY_ID', id)
+            await axios.get('/ios/' + id).then((response) => {
+                commit('SET_IO_MEDIA', response.data[0])
+                commit('SET_CONTRIBUTORS', response.data[1])
+            })
         },
+
+        async newInstallation ( { commit }, data) {
+            await axios.post('/ios', data, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                }
+            }).then((response) =>{
+                alert('ahsdoisaod');
+            })
+        }
     },
 };

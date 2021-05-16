@@ -14,7 +14,7 @@
 </template>
 <script>
 
-import PopupContent from "../components/PopupContent";
+import PopupContent from "../PopupContent";
 import {mapGetters} from "vuex";
 
 let greenIcon = L.icon({
@@ -27,7 +27,7 @@ let redIcon = L.icon({
     iconAnchor: [16, 37],
     popupAnchor: [0, -28],
 });
-import { mapState }  from '../components/mixins/mapStateMixin'
+import { mapState }  from '../mixins/mapStateMixin'
 
 export default {
     name: "filteredInstallation",

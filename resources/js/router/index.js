@@ -5,6 +5,7 @@ import Admin from "../views/admin";
 import Installations from "../components/admin/installations";
 import Installation from "../components/admin/installation";
 import singleInstallation from "../views/singleInstallation";
+import newInstallation from "../views/newInstallation";
 Vue.use(VueRouter);
 
 const routes = [
@@ -12,6 +13,11 @@ const routes = [
         path: '/',
         name: 'Home',
         component: Home,
+    },
+    {
+        path: '/new',
+        name: 'newInstallation',
+        component: newInstallation,
     },
     {
         path: '/installation/:id',

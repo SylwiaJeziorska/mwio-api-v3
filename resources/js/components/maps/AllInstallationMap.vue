@@ -16,7 +16,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { mapState }  from '../components/mixins/mapStateMixin'
+import { mapState }  from '../mixins/mapStateMixin'
 export default {
     name: 'AllInstallationMap',
     props: ["iosCollection"],

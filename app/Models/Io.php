@@ -98,17 +98,34 @@ class Io extends Model
         'situation'
     ];
 
+
     public function getSituationAttribute($record)
     {
-        $p = Point::fromWKT($record);
+        return Point::fromWKT($record);
+       // dd($p);
+//        if(!$record==null && !$p==null){
+//            $situationCoord = ['lat' => $p->getLat(), 'lon' => $p->getLng()];
+//            return $situation =["coordinates" => $situationCoord];
+//        }
 
-        if(!$record==null && !$p==null){
-            $situationCoord = ['lat' => $p->getLat(), 'lon' => $p->getLng()];
-            return $situation =["coordinates" => $situationCoord];
-        }
+    }
+    public function setSituationAttribute($myPoint)
+    {
+            if(is_string($myPoint)){
+                $test = Point::fromString($myPoint);
+                $this->attributes['situation'] = new Point($test->getLat(), $test->getLng());
+            }else{
+                $this->attributes['situation'] = new Point($myPoint['coordinates'][1], $myPoint['coordinates'][0]);
+
+            }
 
 
     }
+    public function setClasseAttribute($value)
+    {
+        $this->attributes['classe'] = implode(',', (array) $value);
+    }
+
     public function user()
     {
         return $this->belongsToMany(User::class, 'io_user', 'io_id', 'user_id');
@@ -118,6 +135,5 @@ class Io extends Model
     {
         return $this->hasMany(Medium::class);
     }
-
 
 }
