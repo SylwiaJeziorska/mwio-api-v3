@@ -34,6 +34,7 @@ class IoController extends Controller
      */
     public function index(Index $request)
     {
+
         $ios = Io::all();
         return response()->json($ios);
     }

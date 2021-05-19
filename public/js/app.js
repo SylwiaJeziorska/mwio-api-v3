@@ -2909,15 +2909,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "filterOption",
   components: {//
   },
   data: function data() {
     return {
+      ampleur: ['0', '1', '2'],
       filter: true,
-      filterCheckedModel: [[], [], []],
+      filterCheckedModel: [[], [], [], [], [], []],
+      impact: ['0', '1', '2'],
       selected: [],
+      search: '',
       origines: ['Touristique', 'Agricole', 'Industrielle', 'Routiere', 'Militaire', 'Inconnue'],
       types: ['Déchets', 'Pylones', 'Blocs de bétons', 'Bâtiments', 'Gravats', 'Fondations', 'Conduites', 'Fils ou câbles', 'Poutres métalliques', 'Tôles', 'Barbelés et clôtures', 'Autre']
     };
@@ -2958,13 +2977,13 @@ __webpack_require__.r(__webpack_exports__);
       if (this.filterCheckedModel[group].includes(element)) {
         var index = this.filterCheckedModel[group].indexOf(element);
         this.filterCheckedModel[group].splice(index, 1);
-      } else {
+      } else if (group != 5) {
         this.filterCheckedModel[group].push(element);
       }
 
       this.filters();
     },
-    filterLayers: function filterLayers(event) {
+    filterLayers: function filterLayers() {
       this.GeoJson2;
 
       if (this.filter == false) {
@@ -2982,6 +3001,17 @@ __webpack_require__.r(__webpack_exports__);
     situationData: function situationData() {// return this.$store.state.installationsObsoletes;
     },
     iosColection: function iosColection() {// return this.$store.state.ioGeoJson;
+    }
+  },
+  watch: {
+    search: function search(newText) {
+      if (newText.length >= 4) {
+        this.filterLayers();
+        this.filterCheckedModel[5][0] = newText;
+      } else {
+        this.filterCheckedModel[5] = [];
+        this.filterLayers();
+      }
     }
   }
 });
@@ -3115,23 +3145,11 @@ var redIcon = L.icon({
       var gcolection = {
         visible: true,
         geojson: this.installations.geojson,
-        options: _defineProperty({
-          onEachFeature: function onEachFeature(feature, layer) {
-            var popupContent = Vue.extend(_PopupContent__WEBPACK_IMPORTED_MODULE_0__.default);
-            var popup = new popupContent({
-              propsData: {
-                date: feature.properties.date_releve,
-                id: feature.properties.id,
-                origin: feature.properties.origine
-              }
-            });
-            layer.bindPopup(popup.$mount().$el);
-          },
+        options: {
           filter: function filter(feature, layer) {
-            var checked = feature.checked; //var classe;
-
+            var checked = feature.checked;
             var classe2;
-            var filterLength = checked[0].length + checked[1].length + checked[2].length;
+            var filterLength = checked[0].length + checked[1].length + checked[2].length + checked[3].length + checked[4].length + checked[5].length;
 
             if (feature.properties.classe) {
               var myStr = feature.properties.classe;
@@ -3142,46 +3160,22 @@ var redIcon = L.icon({
             }
 
             if (display == 1) {
-              if (checked[0].length >= 1 && checked[1].length >= 1 && checked[2].length >= 1) {
-                if (checked[1].includes(feature.properties.origine) && classe.some(function (v) {
-                  return classe2.indexOf(v) !== -1;
-                }) && checked[0].includes(feature.properties.demontee.toString())) {
-                  return true;
-                }
-              } else if (checked[0].length >= 1 && checked[1].length >= 1) {
-                if (checked[1].includes(feature.properties.origine) && checked[0].includes(feature.properties.demontee.toString())) {
-                  return true;
-                }
-              } else if (checked[0].length >= 1 && checked[2].length >= 1) {
-                if (classe.some(function (v) {
-                  return classe2.indexOf(v) !== -1;
-                }) && checked[0].includes(feature.properties.demontee.toString())) {
-                  return true;
-                }
-              } else if (checked[1].length >= 1 && checked[2].length >= 1) {
-                if (checked[1].includes(feature.properties.origine) && classe.some(function (v) {
-                  return classe2.indexOf(v) !== -1;
-                })) {
-                  return true;
-                }
-              } else if (checked[1].length >= 1 && checked[0].length >= 1) {
-                if (checked[1].includes(feature.properties.origine) && checked[0].includes(feature.properties.demontee.toString())) {
-                  return true;
-                }
-              } else if (checked[0].length >= 1) {
-                if (checked[0].includes(feature.properties.demontee.toString())) {
-                  return true;
-                }
-              } else if (checked[1].length >= 1) {
-                if (checked[1].includes(feature.properties.origine)) {
-                  return true;
-                }
-              } else if (checked[2].length >= 1) {
-                if (classe.some(function (v) {
-                  return classe2.indexOf(v) !== -1;
-                })) {
-                  return true;
-                }
+              var id = '';
+
+              if (checked[5].length > 0) {
+                $.each(feature.properties, function (key, value) {
+                  if (typeof value === 'string' && checked[5][0].length >= 4) {
+                    if (value.includes(checked[5][0])) {
+                      id = feature.properties.id;
+                    }
+                  }
+                });
+              }
+
+              if ((checked[1].length == 0 || checked[1].includes(feature.properties.origine)) && (checked[2].length == 0 || classe.some(function (v) {
+                return classe2.indexOf(v) !== -1;
+              })) && (checked[0].length == 0 || checked[0].includes(feature.properties.demontee.toString())) && (checked[3].length == 0 || checked[3].includes(feature.properties.ampleur)) && (checked[4].length == 0 || checked[4].includes(feature.properties.impact)) && (checked[5].length == 0 || id == feature.properties.id)) {
+                return true;
               }
             }
 
@@ -3199,19 +3193,20 @@ var redIcon = L.icon({
             return L.marker(latlng, {
               icon: greenIcon
             });
+          },
+          onEachFeature: function onEachFeature(feature, layer) {
+            var popupContent = Vue.extend(_PopupContent__WEBPACK_IMPORTED_MODULE_0__.default);
+            var popup = new popupContent({
+              propsData: {
+                date: feature.properties.date_releve,
+                id: feature.properties.id,
+                origin: feature.properties.origine,
+                lieu: feature.properties.lieu_dit
+              }
+            });
+            layer.bindPopup(popup.$mount().$el);
           }
-        }, "onEachFeature", function onEachFeature(feature, layer) {
-          var popupContent = Vue.extend(_PopupContent__WEBPACK_IMPORTED_MODULE_0__.default);
-          var popup = new popupContent({
-            propsData: {
-              date: feature.properties.date_releve,
-              id: feature.properties.id,
-              origin: feature.properties.origine,
-              lieu: feature.properties.lieu_dit
-            }
-          });
-          layer.bindPopup(popup.$mount().$el);
-        })
+        }
       };
       this.filteredGJ = gcolection;
     }
@@ -4151,8 +4146,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   filters: {
     formatDate: function formatDate(value) {
-      alert(value);
-
       if (value) {
         return moment__WEBPACK_IMPORTED_MODULE_0___default()(String(value)).format("DD/MM/YYYY");
       }
@@ -4750,15 +4743,18 @@ var redIcon = L.icon({
         var props = installations.data[i];
         props['popupContent'] = installations.data[i].origine;
         props['display'] = true;
-        features.push({
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [installations.data[i].situation.coordinates[0], installations.data[i].situation.coordinates[1]]
-          },
-          properties: props,
-          id: installations.data[i].id
-        });
+
+        if (installations.data[i].situation.type == 'Point') {
+          features.push({
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [installations.data[i].situation.coordinates[0], installations.data[i].situation.coordinates[1]]
+            },
+            properties: props,
+            id: installations.data[i].id
+          });
+        }
       }
 
       state.installations = {
@@ -4899,7 +4895,7 @@ var redIcon = L.icon({
                     "Content-Type": "multipart/form-data"
                   }
                 }).then(function (response) {
-                  alert('ahsdoisaod');
+                  alert('to do for success');
                 });
 
               case 3:
@@ -80881,12 +80877,38 @@ var render = function() {
         "div",
         { staticClass: "desktop mvh-100 form-group", attrs: { id: "filters" } },
         [
-          _c(
-            "div",
-            { staticClass: "filter-criteria", on: { click: _vm.filterLayers } },
-            [
-              _vm._m(0),
-              _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "row justify-content-center" }, [
+            _c("label", [_vm._v("recherche")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search,
+                  expression: "search"
+                }
+              ],
+              attrs: { type: "text" },
+              domProps: { value: _vm.search },
+              on: {
+                click: function($event) {
+                  return _vm.addFilterElement(_vm.search, 5)
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.search = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { on: { click: _vm.filterLayers } }, [
+            _c("div", { staticClass: "filter-criteria" }, [
               _vm._m(1),
               _vm._v(" "),
               _c("div", { staticClass: "row justify-content-center statut" }, [
@@ -80977,9 +80999,53 @@ var render = function() {
                   })
                 }),
                 0
+              ),
+              _vm._v(" "),
+              _vm._m(4),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "row justify-content-center" },
+                _vm._l(_vm.ampleur, function(type, index) {
+                  return _c("input", {
+                    class: { highlight: _vm.selected.includes(index) },
+                    attrs: { type: "button", value: type },
+                    on: {
+                      click: function($event) {
+                        _vm.addFilterElement(type, 3)
+                        _vm.selected.includes(index)
+                          ? _vm.selected.splice(_vm.selected.indexOf(index), 1)
+                          : _vm.selected.push(index)
+                      }
+                    }
+                  })
+                }),
+                0
+              ),
+              _vm._v(" "),
+              _vm._m(5),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "row justify-content-center" },
+                _vm._l(_vm.impact, function(type, index) {
+                  return _c("input", {
+                    class: { highlight: _vm.selected.includes(index) },
+                    attrs: { type: "button", value: type },
+                    on: {
+                      click: function($event) {
+                        _vm.addFilterElement(type, 4)
+                        _vm.selected.includes(index)
+                          ? _vm.selected.splice(_vm.selected.indexOf(index), 1)
+                          : _vm.selected.push(index)
+                      }
+                    }
+                  })
+                }),
+                0
               )
-            ]
-          )
+            ])
+          ])
         ]
       )
     ])
@@ -81018,6 +81084,22 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("p", { staticClass: "rs-label" }, [
       _c("span", [_vm._v("Classe  ")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "rs-label" }, [
+      _c("span", [_vm._v("Amp...  ")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "rs-label" }, [
+      _c("span", [_vm._v("Impact...  ")])
     ])
   }
 ]
@@ -81102,7 +81184,11 @@ var render = function() {
       [
         _c(
           "l-map",
-          { ref: "map", attrs: { zoom: _vm.zoom, center: _vm.center } },
+          {
+            key: _vm.filteredGJ,
+            ref: "map",
+            attrs: { zoom: _vm.zoom, center: _vm.center }
+          },
           [
             _c("l-tile-layer", {
               attrs: { url: _vm.url, attribution: _vm.attribution }
@@ -83318,13 +83404,13 @@ var render = function() {
               _c("p", { staticClass: "collapse-content" }, [
                 _vm._v(
                   "\n                Longitude: " +
-                    _vm._s(_vm.io.situation.coordinates.lat.toFixed(4)) +
+                    _vm._s(_vm.io.situation.coordinates[0].toFixed(4)) +
                     " "
                 ),
                 _c("br"),
                 _vm._v(
                   "Latitude : " +
-                    _vm._s(_vm.io.situation.coordinates.lon.toFixed(4)) +
+                    _vm._s(_vm.io.situation.coordinates[1].toFixed(4)) +
                     "\n            "
                 )
               ])

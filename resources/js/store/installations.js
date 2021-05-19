@@ -44,15 +44,17 @@ export default {
                 var props = installations.data[i];
                 props['popupContent'] = installations.data[i].origine;
                 props['display'] = true;
-                features.push({
-                    type: 'Feature',
-                    geometry: {
-                        type: 'Point',
-                        coordinates: [installations.data[i].situation.coordinates[0] ,installations.data[i].situation.coordinates[1]]
-                    },
-                    properties: props,
-                    id: installations.data[i].id,
-                });
+                if(installations.data[i].situation.type == 'Point'){
+                    features.push({
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [installations.data[i].situation.coordinates[0] ,installations.data[i].situation.coordinates[1]]
+                        },
+                        properties: props,
+                        id: installations.data[i].id,
+                    });
+                }
             }
             state.installations = {
                 visible: true,
@@ -151,7 +153,7 @@ export default {
                     "Content-Type": "multipart/form-data",
                 }
             }).then((response) =>{
-                alert('ahsdoisaod');
+                alert('to do for success');
             })
         }
     },

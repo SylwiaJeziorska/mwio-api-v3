@@ -50,8 +50,8 @@
             </h2>
             <div v-if="io.situation" id="location" class="collapse ml-4 mr-4 pl-4">
                 <p class="collapse-content">
-                    Longitude: {{ io.situation.coordinates.lat.toFixed(4) }} <br />Latitude : {{
-                        io.situation.coordinates.lon.toFixed(4)
+                    Longitude: {{ io.situation.coordinates[0].toFixed(4) }} <br />Latitude : {{
+                        io.situation.coordinates[1].toFixed(4)
                     }}
                 </p>
             </div>
@@ -263,7 +263,6 @@ export default {
     },
     filters: {
         formatDate(value) {
-            alert(value)
             if (value) {
                 return moment(String(value)).format("DD/MM/YYYY");
             }

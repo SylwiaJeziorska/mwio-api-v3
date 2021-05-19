@@ -98,17 +98,6 @@ class Io extends Model
         'situation'
     ];
 
-
-    public function getSituationAttribute($record)
-    {
-        return Point::fromWKT($record);
-       // dd($p);
-//        if(!$record==null && !$p==null){
-//            $situationCoord = ['lat' => $p->getLat(), 'lon' => $p->getLng()];
-//            return $situation =["coordinates" => $situationCoord];
-//        }
-
-    }
     public function setSituationAttribute($myPoint)
     {
             if(is_string($myPoint)){
@@ -116,9 +105,7 @@ class Io extends Model
                 $this->attributes['situation'] = new Point($test->getLat(), $test->getLng());
             }else{
                 $this->attributes['situation'] = new Point($myPoint['coordinates'][1], $myPoint['coordinates'][0]);
-
             }
-
 
     }
     public function setClasseAttribute($value)
