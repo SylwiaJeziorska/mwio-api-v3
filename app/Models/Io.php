@@ -98,17 +98,29 @@ class Io extends Model
         'situation'
     ];
 
-    public function getSituationAttribute($record)
+    public function setSituationAttribute($myPoint)
     {
-        $p = Point::fromWKT($record);
-
-        if(!$record==null && !$p==null){
-            $situationCoord = ['lat' => $p->getLat(), 'lon' => $p->getLng()];
-            return $situation =["coordinates" => $situationCoord];
-        }
-
+            if(is_string($myPoint)){
+                $test = Point::fromString($myPoint);
+                $this->attributes['situation'] = new Point($test->getLat(), $test->getLng());
+            }else{
+                $this->attributes['situation'] = new Point($myPoint['coordinates'][1], $myPoint['coordinates'][0]);
+            }
 
     }
+    public function setClasseAttribute($value)
+    {
+        $this->attributes['classe'] = implode(',', (array) $value);
+    }
 
+    public function user()
+    {
+        return $this->belongsToMany(User::class, 'io_user', 'io_id', 'user_id');
+    }
+
+    public function media()
+    {
+        return $this->hasMany(Medium::class);
+    }
 
 }

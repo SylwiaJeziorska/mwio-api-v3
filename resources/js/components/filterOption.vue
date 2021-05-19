@@ -2,8 +2,14 @@
     <div class="container-fluid">
         <div class="io-container mvh-100 d-flex">
             <div id='filters' class="desktop mvh-100 form-group">
-                <div @click="filterLayers" class="filter-criteria">
-                    <h1 class="text-col-title">Rechercher une installation </br> obsolète</h1>
+                <h1 class="text-col-title">Rechercher une installation </br> obsolète</h1>
+                <div class="row justify-content-center">
+                    <label>recherche</label>
+                    <input type="text" v-model="search" @click="addFilterElement(search, 5)"/>
+                  </div>
+                <div  @click="filterLayers">
+                <div class="filter-criteria">
+
                     <p class="rs-label"> <span>Statut </span> </p>
                     <div class="row justify-content-center statut">
                         <input id="green" type="button" value="Démontée" :class="{highlight:selected.includes('Démontée'), green:filter}" @click="addFilterElement('1',0);
@@ -11,7 +17,6 @@
                         <input id="orange" type="button" value="Non démontée" :class="{highlight:selected.includes('Montée'), orange:filter}" @click="addFilterElement('0',0);
                         selected.includes('Montée') ? selected.splice(selected.indexOf('Montée'), 1) : selected.push('Montée')">
                     </div>
-
                     </br>
                     <p class="rs-label"> <span>Origine </span> </p>
                     <div class="row justify-content-center">
@@ -24,9 +29,20 @@
                         <input v-for="(type, index) in types" :class="{highlight:selected.includes(index)}" type="button" v-bind:value="type" @click="addFilterElement(type,2);
                         selected.includes(index) ? selected.splice(selected.indexOf(index), 1) : selected.push(index)">
                     </div>
+                    <p class="rs-label"> <span>Amp...  </span> </p>
+                    <div class="row justify-content-center">
+                        <input v-for="(type, index) in ampleur" :class="{highlight:selected.includes(index)}" type="button" v-bind:value="type" @click="addFilterElement(type,3);
+                        selected.includes(index) ? selected.splice(selected.indexOf(index), 1) : selected.push(index)">
+                    </div>
+                    <p class="rs-label"> <span>Impact...  </span> </p>
+                    <div class="row justify-content-center">
+                        <input v-for="(type, index) in impact" :class="{highlight:selected.includes(index)}" type="button" v-bind:value="type" @click="addFilterElement(type,4);
+                        selected.includes(index) ? selected.splice(selected.indexOf(index), 1) : selected.push(index)">
+                    </div>
                 </div>
             </div>
 
+        </div>
         </div>
     </div>
 </template>
@@ -40,9 +56,12 @@ export default {
     },
     data: function() {
         return {
+            ampleur: ['0','1', '2'],
             filter: true,
-            filterCheckedModel: [[], [], []],
+            filterCheckedModel: [[], [], [], [], [], []],
+            impact: ['0','1', '2'],
             selected: [],
+            search:'',
             origines: ['Touristique', 'Agricole', 'Industrielle', 'Routiere', 'Militaire', 'Inconnue'],
             types: ['Déchets', 'Pylones', 'Blocs de bétons', 'Bâtiments', 'Gravats', 'Fondations', 'Conduites', 'Fils ou câbles', 'Poutres métalliques', 'Tôles', 'Barbelés et clôtures', 'Autre'],
         }
@@ -68,7 +87,6 @@ export default {
         },
         closeSearch: function() {
             this.$emit('clicked', 'false')
-
             this.allIos = true;
             this.filteredio = false;
             $("#map-class").animate({
@@ -85,14 +103,13 @@ export default {
             if (this.filterCheckedModel[group].includes(element)) {
                 var index = this.filterCheckedModel[group].indexOf(element);
                 this.filterCheckedModel[group].splice(index, 1);
-            } else {
+            } else if ( group != 5){
                 this.filterCheckedModel[group].push(element);
             }
             this.filters();
         },
-
-        filterLayers: function(event) {
-            this.GeoJson2;
+        filterLayers: function() {
+             this.GeoJson2;
             if (this.filter == false) {
                 this.GeoJson2;
                 this.filter = true;
@@ -115,6 +132,17 @@ export default {
 
         }
     },
+    watch:{
+        search: function (newText){
+            if(newText.length >= 4){
+                this.filterLayers();
+                this.filterCheckedModel[5][0] = newText;
+            }else{
+                this.filterCheckedModel[5] = [];
+                this.filterLayers();
+            }
+        }
+    }
 }
 
 </script>

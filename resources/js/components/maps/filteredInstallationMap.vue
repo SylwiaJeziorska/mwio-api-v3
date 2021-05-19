@@ -1,7 +1,7 @@
 <template>
     <div>
         <div id="filter" class="mvh-100">
-            <l-map ref="map" :zoom="zoom" :center="center">
+            <l-map ref="map" :zoom="zoom" :center="center" :key="filteredGJ">
                 <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
                 <l-geo-json
                     :visible="filteredGJ.visible"
@@ -14,20 +14,20 @@
 </template>
 <script>
 
-import PopupContent from "../components/PopupContent";
+import PopupContent from "../PopupContent";
 import {mapGetters} from "vuex";
 
-var greenIcon = L.icon({
+let greenIcon = L.icon({
     iconUrl: "../images/vendor/leaflet/dist/marker-vert.png",
     iconAnchor: [16, 37],
     popupAnchor: [0, -28],
 });
-var redIcon = L.icon({
+let redIcon = L.icon({
     iconUrl: "/images/vendor/leaflet/dist/marker-orange.png",
     iconAnchor: [16, 37],
     popupAnchor: [0, -28],
 });
-import { mapState }  from '../components/mixins/mapStateMixin'
+import { mapState }  from '../mixins/mapStateMixin'
 
 export default {
     name: "filteredInstallation",
@@ -46,23 +46,11 @@ export default {
                 visible: true,
                 geojson: this.installations.geojson,
                 options: {
-                    onEachFeature: function (feature, layer) {
-                        let popupContent = Vue.extend(PopupContent);
-                        let popup = new popupContent({
-                            propsData: {
-                                date: feature.properties.date_releve,
-                                id: feature.properties.id,
-                                origin: feature.properties.origine,
-                            },
-                        });
-                        layer.bindPopup(popup.$mount().$el);
-                    },
                     filter: function (feature, layer) {
                         var checked = feature.checked;
-                        //var classe;
                         var classe2;
                         let filterLength =
-                            checked[0].length + checked[1].length + checked[2].length;
+                            checked[0].length + checked[1].length + checked[2].length + checked[3].length + checked[4].length + checked[5].length;
                         if (feature.properties.classe) {
                             var myStr = feature.properties.classe;
                             var classe = myStr.split(",").sort();
@@ -70,65 +58,28 @@ export default {
                         } else {
                             classe = [];
                         }
+
                         if (display == 1) {
-                            if (
-                                checked[0].length >= 1 &&
-                                checked[1].length >= 1 &&
-                                checked[2].length >= 1
-                            ) {
-                                if (
-                                    checked[1].includes(feature.properties.origine) &&
-                                    classe.some(v=> classe2.indexOf(v) !== -1) &&
-                                    checked[0].includes(feature.properties.demontee.toString())
-                                ) {
-                                    return true;
-                                }
-                            } else if (checked[0].length >= 1 && checked[1].length >= 1) {
-                                if (
-                                    checked[1].includes(feature.properties.origine) &&
-                                    checked[0].includes(feature.properties.demontee.toString())
-                                ) {
-                                    return true;
-                                }
-                            } else if (checked[0].length >= 1 && checked[2].length >= 1) {
-                                if (
-                                    classe.some(v=> classe2.indexOf(v) !== -1) &&
-                                    checked[0].includes(feature.properties.demontee.toString())
-                                ) {
-                                    return true;
-                                }
-                            } else if (checked[1].length >= 1 && checked[2].length >= 1) {
-                                if (
-                                    checked[1].includes(feature.properties.origine) &&
-                                    classe.some(v=> classe2.indexOf(v) !== -1)
-                                ) {
-                                    return true;
-                                }
-                            } else if (checked[1].length >= 1 && checked[0].length >= 1) {
-                                if (
-                                    checked[1].includes(feature.properties.origine) &&
-                                    checked[0].includes(feature.properties.demontee.toString())
-                                ) {
-                                    return true;
-                                }
-                            } else if (checked[0].length >= 1) {
-                                if (
-                                    checked[0].includes(feature.properties.demontee.toString())
-                                ) {
-                                    return true;
-                                }
-                            } else if (checked[1].length >= 1) {
-                                if (checked[1].includes(feature.properties.origine)) {
-                                    return true;
-                                }
-                            } else if (checked[2].length >= 1) {
-
-                                if (classe.some(v => classe2.indexOf(v) !== -1)) {
-                                    return true;
-                                }
+                            let id='';
+                            if(checked[5].length > 0 ){
+                                $.each(feature.properties, function(key, value) {
+                                    if (typeof value === 'string' && checked[5][0].length >= 4){
+                                        if(value.includes(checked[5][0])){
+                                            id = feature.properties.id;
+                                        }
+                                    }
+                                });
                             }
-
-
+                            if(
+                                (checked[1].length == 0 || checked[1].includes(feature.properties.origine)) &&
+                                (checked[2].length == 0 || classe.some(v=> classe2.indexOf(v) !== -1) ) &&
+                                (checked[0].length == 0 || checked[0].includes(feature.properties.demontee.toString())) &&
+                                (checked[3].length == 0 || checked[3].includes(feature.properties.ampleur)) &&
+                                (checked[4].length == 0 || checked[4].includes(feature.properties.impact)) &&
+                                (checked[5].length == 0 || id == feature.properties.id)
+                            ) {
+                                return true;
+                            }
                         }
                         if (filterLength == 0) {
                             return true;

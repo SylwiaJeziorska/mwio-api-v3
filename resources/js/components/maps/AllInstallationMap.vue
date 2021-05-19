@@ -1,7 +1,7 @@
 <template>
     <div>
         <div id="ios">
-            <l-map :zoom="zoom" :center="center">
+            <l-map ref="map" :zoom="zoom" :center="center">
                 <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
                 <l-geo-json
                     :key="iosCollection.id"
@@ -16,7 +16,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { mapState }  from '../components/mixins/mapStateMixin'
+import { mapState }  from '../mixins/mapStateMixin'
 export default {
     name: 'AllInstallationMap',
     props: ["iosCollection"],
@@ -33,6 +33,12 @@ export default {
             zoom: 'mapState/zoom',
             center: 'mapState/center'
         }),
+    },
+    mounted() {
+        this.$refs.map.mapObject.on("move", () => {
+            this.settCurrentCenter();
+            this.settCurrentZoom();
+        });
     }
 };
 </script>

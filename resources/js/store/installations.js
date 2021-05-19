@@ -16,30 +16,45 @@ export default {
     state: {
        installations: null,
         filters: [[], [], []],
+        io: {},
+        marker: {},
+        user: {},
+        media: [],
+        contributors: []
 
     },
     getters: {
         installations(state) {
             return state.installations;
         },
+        singleInstallation(state) {
+            return state.io;
+        },
+        marker(state) {
+            return state.marker;
+        },
+        user(state) {
+            return state.user;
+        },
     },
     mutations: {
         SET_INSTALLATIONS(state, installations){
-           // state.installations = installations.data;
             let features = [];
             for (let i = 0; i < installations.data.length; i++) {
                 var props = installations.data[i];
                 props['popupContent'] = installations.data[i].origine;
                 props['display'] = true;
-                features.push({
-                    type: 'Feature',
-                    geometry: {
-                        type: 'Point',
-                        coordinates: [installations.data[i].situation.coordinates.lon ,installations.data[i].situation.coordinates.lat]
-                    },
-                    properties: props,
-                    id: installations.data[i].id,
-                });
+                if(installations.data[i].situation.type == 'Point'){
+                    features.push({
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [installations.data[i].situation.coordinates[0] ,installations.data[i].situation.coordinates[1]]
+                        },
+                        properties: props,
+                        id: installations.data[i].id,
+                    });
+                }
             }
             state.installations = {
                 visible: true,
@@ -92,12 +107,54 @@ export default {
         },
         SET_FILTERS(state,filters){
             state.filters = filters;
+        },
+        SET_SINGLE_IO( state, io){
+            state.io = io.data;
+        },
+        SET_MARKER(state, io){
+            state.marker = L.latLng(
+                io.coordinates.lat,
+                io.coordinates.lon
+            );
+        },
+        SET_IO_BY_ID( state, id){
+            let arrayOfInstallation = state.installations.geojson.features;
+            let io = arrayOfInstallation.filter(io => io.id === id);
+            state.io =  io[0];
+            state.marker = L.latLng(
+                io[0].geometry.coordinates[1],
+                io[0].geometry.coordinates[0]
+            );
+        },
+        SET_IO_MEDIA(state, media){
+            state.media = media;
+        },
+        SET_CONTRIBUTORS( state, contributors){
+            state.contributors = contributors;
         }
     },
     actions: {
         async installations({ commit }){
-            let response = await axios.get('/ios');
-            commit('SET_INSTALLATIONS', response);
+            await axios.get('/ios').then((response) => {
+                commit('SET_INSTALLATIONS', response);
+            })
+        },
+        async getIO( { commit }, id) {
+            commit('SET_IO_BY_ID', id)
+            await axios.get('/ios/' + id).then((response) => {
+                commit('SET_IO_MEDIA', response.data[0])
+                commit('SET_CONTRIBUTORS', response.data[1])
+            })
+        },
+
+        async newInstallation ( { commit }, data) {
+            await axios.post('/ios', data, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                }
+            }).then((response) =>{
+                alert('to do for success');
+            })
         }
     },
 };

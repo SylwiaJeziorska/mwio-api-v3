@@ -1,4 +1,5 @@
-import {LControlAttribution, LControlLayers, LControlScale, LGeoJson, LMap, LMarker, LTileLayer} from "vue2-leaflet";
+import {LControlAttribution, LControlLayers, LControlScale, LGeoJson, LMap, LMarker, LTileLayer,LLayerGroup,
+} from "vue2-leaflet";
 
 export let mapState = {
     components: {
@@ -8,7 +9,9 @@ export let mapState = {
         LControlAttribution,
         LControlScale,
         LControlLayers,
-        LMarker
+        LMarker,
+        LLayerGroup,
+
     },
     props: {
 
