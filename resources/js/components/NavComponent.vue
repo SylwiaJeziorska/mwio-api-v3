@@ -10,15 +10,33 @@
                             >home</router-link
                             >
                         </li>
+                        <li v-if="!user" class="scrolly" href="#header">
+                            <router-link
+                                :to="{ name: 'register' }"
+                            >register</router-link
+                            >
+                        </li>
+                        <li v-if="!user" class="scrolly" href="#header">
+                            <router-link
+                                :to="{ name: 'signIn' }"
+                            >signIn</router-link
+                            >
+                        </li>
                         <li class="scrolly" href="#header">
                             <router-link
                                 to="/new"
                             >new</router-link
                             >
                         </li>
-                        <router-link :to="{ name: 'Admin' }"
-                        ><span>hoidewhdoi</span></router-link
-                        >
+                        <li v-if="user">
+                            <router-link :to="{ name: 'Admin' }">
+                                <span>Admin</span></router-link>
+                        </li>
+                        <li v-if="user">
+                            <router-link :to="{ name: 'User', params: { id: user.id } }">
+                                <span>{{user.name}}</span></router-link>
+                        </li>
+
                     </ul>
                 </nav>
             </div>
@@ -27,8 +45,15 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
+
 export default {
     name: 'NavComponent',
+    computed: {
+        ...mapGetters({
+            user: 'auth/user',
+        }),
+    },
     mounted() {
     }
 }

@@ -10,6 +10,7 @@ window.Vue = require('vue').default;
 import router from './router/index';
 import 'leaflet/dist/leaflet.css';
 import store from './store';
+axios.defaults.baseURL = 'http://127.0.0.1:8000';
 
 /**
  * The following block of code may be used to automatically register your

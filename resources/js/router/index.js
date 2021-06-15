@@ -6,6 +6,9 @@ import Installations from "../components/admin/installations";
 import Installation from "../components/admin/installation";
 import singleInstallation from "../views/singleInstallation";
 import newInstallation from "../views/newInstallation";
+import userAccount from "../components/user/userAccount"
+import register from "../components/auth/register"
+import signIn from "../components/auth/signIn"
 Vue.use(VueRouter);
 
 const routes = [
@@ -42,6 +45,21 @@ const routes = [
                 props: true
             },
         ]
+    },
+    {
+        path: '/user/:id',
+        name: 'User',
+        component: userAccount
+    },
+    {
+        path: '/api/auth/register',
+        name: 'register',
+        component: register
+    },
+    {
+        path: '/api/auth/signIn',
+        name: 'signIn',
+        component: signIn
     }
 ];
 
