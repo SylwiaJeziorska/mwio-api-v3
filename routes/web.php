@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IoController;
 /*
@@ -16,10 +18,10 @@ use App\Http\Controllers\IoController;
 Route::get('/', function () {
     return view('home');
 });
-Route::resource('ios',IoController::class);
-//Route::get('/ios', 'HomeController@index')->name('home');
-
+//Route::resource('ios',IoController::class)->middleware('auth');
+Route::resource('ios',IoController::class) ;
+//Route::post('ios/create', IoController::class, 'store')->middleware('auth');
 
 
 Auth::routes(['verify' => true]);
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');

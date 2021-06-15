@@ -9,17 +9,24 @@
 <script>
 import NavComponent from './components/NavComponent';
 import { mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
     export default {
         components: {NavComponent},
         mounted() {
             this.getInstallations();
-            this.$store.state.installations.user = this.$attrs.user;
+            //this.$store.state.installations.user = this.$attrs.user;
+
         },
         methods: {
             ...mapActions({
                 getInstallations: 'installations/installations',
             }),
-        }
+        },
+        computed: {
+            ...mapGetters({
+                authenticated: 'auth/authenticated',
+            }),
+        },
     }
 </script>

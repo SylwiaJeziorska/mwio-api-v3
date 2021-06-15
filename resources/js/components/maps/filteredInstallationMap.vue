@@ -1,7 +1,7 @@
 <template>
     <div>
         <div id="filter" class="mvh-100">
-            <l-map ref="map" :zoom="zoom" :center="center" :key="filteredGJ">
+            <l-map ref="map" :zoom="zoom" :center="center">
                 <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
                 <l-geo-json
                     :visible="filteredGJ.visible"
