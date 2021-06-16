@@ -22,7 +22,7 @@
                             >signIn</router-link
                             >
                         </li>
-                        <li class="scrolly" href="#header">
+                        <li v-if="user" class="scrolly" href="#header">
                             <router-link
                                 to="/new"
                             >new</router-link
@@ -36,6 +36,9 @@
                             <router-link :to="{ name: 'User', params: { id: user.id } }">
                                 <span>{{user.name}}</span></router-link>
                         </li>
+                        <li v-if="user">
+                                <span v-on:click="logout">logout</span>
+                        </li>
 
                     </ul>
                 </nav>
@@ -46,12 +49,18 @@
 
 <script>
 import {mapGetters} from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'NavComponent',
     computed: {
         ...mapGetters({
             user: 'auth/user',
+        }),
+    },
+    methods:{
+        ...mapActions({
+            logout: 'auth/logout',
         }),
     },
     mounted() {

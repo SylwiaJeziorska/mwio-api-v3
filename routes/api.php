@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\IoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
@@ -17,15 +19,24 @@ use App\Http\Controllers\Auth\SignInController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::resource('ios',IoController::class) ;
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group([
+    'middleware' => 'auth:api',
+], function () {
+    Route::resource('ios',IoController::class, ['only' => ['store']]) ;
 });
 
 Route::group(['prefix'=> 'auth', 'namespace' => 'Auth'], function (){
     Route::post('signIn', [SignInController::class, 'signIn']);
     Route::post('register', [RegisterController::class, 'registerUser']);
     Route::get('signup/activate/{token}', [RegisterController::class, 'signupActivate']);
+    Route::group([
+        'middleware' => 'auth:api',
+    ], function () {
+        Route::get('user', [LoginController::class, 'user']);
+        Route::get('logout', [LoginController::class, 'logout']);
+    });
 
     //Route::post('signout', 'SignOutController');
     //Route::get('me', 'MeController');

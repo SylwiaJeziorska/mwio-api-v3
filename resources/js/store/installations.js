@@ -135,20 +135,20 @@ export default {
     },
     actions: {
         async installations({ commit }){
-            await axios.get('/ios').then((response) => {
+            await axios.get('api/ios').then((response) => {
                 commit('SET_INSTALLATIONS', response);
             })
         },
         async getIO( { commit }, id) {
             commit('SET_IO_BY_ID', id)
-            await axios.get('/ios/' + id).then((response) => {
+            await axios.get('api/ios/' + id).then((response) => {
                 commit('SET_IO_MEDIA', response.data[0])
                 commit('SET_CONTRIBUTORS', response.data[1])
             })
         },
 
         async newInstallation ( { commit }, data) {
-            await axios.post('/ios', data, {
+            await axios.post('api/ios', data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 }

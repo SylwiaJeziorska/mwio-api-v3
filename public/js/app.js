@@ -1956,11 +1956,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'NavComponent',
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)({
     user: 'auth/user'
+  })),
+  methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)({
+    logout: 'auth/logout'
   })),
   mounted: function mounted() {}
 });
@@ -3035,7 +3042,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   components: {},
   data: function data() {
     return {
-      form: {}
+      form: {
+        client_id: '4',
+        client_secret: 'uViMUBP3duRdFvKSWDzs2HPwt0OKbZ9eR7axeX8J',
+        grant_type: "password"
+      }
     };
   },
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)({
@@ -4716,16 +4727,21 @@ axios.defaults.baseURL = 'http://127.0.0.1:8000';
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('app-component', __webpack_require__(/*! ./AppComponent.vue */ "./resources/js/AppComponent.vue").default);
+
+__webpack_require__(/*! ./store/subscriber */ "./resources/js/store/subscriber.js");
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-var app = new Vue({
-  router: _router_index__WEBPACK_IMPORTED_MODULE_0__.default,
-  store: _store__WEBPACK_IMPORTED_MODULE_2__.default,
-  el: '#app'
+
+_store__WEBPACK_IMPORTED_MODULE_2__.default.dispatch('auth/attempt', localStorage.getItem('token')).then(function () {
+  var app = new Vue({
+    router: _router_index__WEBPACK_IMPORTED_MODULE_0__.default,
+    store: _store__WEBPACK_IMPORTED_MODULE_2__.default,
+    el: '#app'
+  });
 });
 
 /***/ }),
@@ -4970,15 +4986,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 dispatch = _ref.dispatch, commit = _ref.commit;
                 _context.next = 3;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/auth/signIn', credentials);
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/oauth/token', credentials);
 
               case 3:
                 response = _context.sent;
-                console.log(response.data.access_token);
-                commit('SET_USER', response.data.user);
                 return _context.abrupt("return", dispatch('attempt', response.data.access_token));
 
-              case 7:
+              case 5:
               case "end":
                 return _context.stop();
             }
@@ -4988,38 +5002,52 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     attempt: function attempt(_ref2, token) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        var commit, state;
+        var commit, state, response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 commit = _ref2.commit, state = _ref2.state;
-                console.log('in attem');
 
                 if (token) {
-                  commit('SET_TOKEN', token);
+                  commit("SET_TOKEN", token);
                 }
 
-                if (state.token) {
-                  _context2.next = 5;
-                  break;
-                }
-
-                return _context2.abrupt("return");
+                _context2.prev = 2;
+                _context2.next = 5;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().get('api/auth/user', {
+                  headers: {
+                    accept: 'application/json',
+                    Authorization: 'Bearer ' + token
+                  }
+                });
 
               case 5:
+                response = _context2.sent;
+                commit('SET_USER', response.data);
+                _context2.next = 13;
+                break;
+
+              case 9:
+                _context2.prev = 9;
+                _context2.t0 = _context2["catch"](2);
+                commit('SET_TOKEN', null);
+                commit('SET_USER', null);
+
+              case 13:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2);
+        }, _callee2, null, [[2, 9]]);
       }))();
     },
-    signOut: function signOut(_ref3) {
+    logout: function logout(_ref3) {
       var commit = _ref3.commit;
-      return axios__WEBPACK_IMPORTED_MODULE_1___default().post('api/auth/signout').then(function () {
+      return axios__WEBPACK_IMPORTED_MODULE_1___default().get('api/auth/logout').then(function () {
         commit('SET_TOKEN', null);
         commit('SET_USER', null);
+        location.reload();
       });
     }
   }
@@ -5232,7 +5260,7 @@ var redIcon = L.icon({
               case 0:
                 commit = _ref.commit;
                 _context.next = 3;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default().get('/ios').then(function (response) {
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().get('api/ios').then(function (response) {
                   commit('SET_INSTALLATIONS', response);
                 });
 
@@ -5254,7 +5282,7 @@ var redIcon = L.icon({
                 commit = _ref2.commit;
                 commit('SET_IO_BY_ID', id);
                 _context2.next = 4;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default().get('/ios/' + id).then(function (response) {
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().get('api/ios/' + id).then(function (response) {
                   commit('SET_IO_MEDIA', response.data[0]);
                   commit('SET_CONTRIBUTORS', response.data[1]);
                 });
@@ -5276,7 +5304,7 @@ var redIcon = L.icon({
               case 0:
                 commit = _ref3.commit;
                 _context3.next = 3;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/ios', data, {
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().post('api/ios', data, {
                   headers: {
                     "Content-Type": "multipart/form-data"
                   }
@@ -5329,6 +5357,36 @@ __webpack_require__.r(__webpack_exports__);
     CURRENT_CENTER: function CURRENT_CENTER(state, center) {
       state.center = center.center;
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/subscriber.js":
+/*!******************************************!*\
+  !*** ./resources/js/store/subscriber.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/store */ "./resources/js/store/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
+
+_store__WEBPACK_IMPORTED_MODULE_0__.default.subscribe(function (mutation) {
+  switch (mutation.type) {
+    case 'auth/SET_TOKEN':
+      if (mutation.payload) {
+        (axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.headers.common.Authorization) = "Bearer ".concat(mutation.payload);
+        localStorage.setItem('token', mutation.payload);
+      } else {
+        (axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.headers.common.Authorization) = null;
+        localStorage.removeItem('token');
+      }
+
+      break;
   }
 });
 
@@ -79352,12 +79410,18 @@ var render = function() {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _c(
-                "li",
-                { staticClass: "scrolly", attrs: { href: "#header" } },
-                [_c("router-link", { attrs: { to: "/new" } }, [_vm._v("new")])],
-                1
-              ),
+              _vm.user
+                ? _c(
+                    "li",
+                    { staticClass: "scrolly", attrs: { href: "#header" } },
+                    [
+                      _c("router-link", { attrs: { to: "/new" } }, [
+                        _vm._v("new")
+                      ])
+                    ],
+                    1
+                  )
+                : _vm._e(),
               _vm._v(" "),
               _vm.user
                 ? _c(
@@ -79387,6 +79451,14 @@ var render = function() {
                     ],
                     1
                   )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.user
+                ? _c("li", [
+                    _c("span", { on: { click: _vm.logout } }, [
+                      _vm._v("logout")
+                    ])
+                  ])
                 : _vm._e()
             ])
           ])
@@ -81792,18 +81864,18 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.form.email,
-                        expression: "form.email"
+                        value: _vm.form.username,
+                        expression: "form.username"
                       }
                     ],
                     attrs: { type: "text", name: "email", id: "email" },
-                    domProps: { value: _vm.form.email },
+                    domProps: { value: _vm.form.username },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.form, "email", $event.target.value)
+                        _vm.$set(_vm.form, "username", $event.target.value)
                       }
                     }
                   })
