@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -18,8 +19,8 @@ use App\Http\Controllers\IoController;
 Route::get('/', function () {
     return view('home');
 });
+
 //Route::resource('ios',IoController::class)->middleware('auth');
-Route::resource('ios',IoController::class) ;
 //Route::post('ios/create', IoController::class, 'store')->middleware('auth');
 
 

@@ -10,6 +10,7 @@ window.Vue = require('vue').default;
 import router from './router/index';
 import 'leaflet/dist/leaflet.css';
 import store from './store';
+
 axios.defaults.baseURL = 'http://127.0.0.1:8000';
 
 /**
@@ -24,15 +25,16 @@ axios.defaults.baseURL = 'http://127.0.0.1:8000';
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('app-component', require('./AppComponent.vue').default);
-
+require('./store/subscriber');
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
+store.dispatch('auth/attempt', localStorage.getItem('token')).then(() => {
 const app = new Vue({
     router,
     store,
     el: '#app',
+});
 });

@@ -24,37 +24,32 @@ export default {
     },
     actions: {
         async signIn({ dispatch, commit }, credentials) {
-            let response = await axios.post('/api/auth/signIn', credentials);
-            console.log(response.data.access_token);
-            commit('SET_USER', response.data.user);
+            let response = await axios.post('/oauth/token', credentials);
 
             return dispatch('attempt', response.data.access_token);
         },
         async attempt({ commit, state }, token) {
-            console.log('in attem');
-
             if (token) {
-                commit('SET_TOKEN', token);
+                commit("SET_TOKEN", token);
             }
-            if (!state.token) {
-                return;
-            }
-            // try {
-            //     let response = await axios.get('/api/auth/me', {
-            //         headers: {
-            //             Authorization: 'Bearer' + token,
-            //         },
-            //     });
-            //     commit('SET_USER', response.data);
-            // } catch (e) {
-            //     commit('SET_TOKEN', null);
-            //     commit('SET_USER', null);
-            // }
-        },
-        signOut({ commit }) {
-            return axios.post('api/auth/signout').then(() => {
+            try {
+                let response = await axios.get('api/auth/user', {
+                    headers: {
+                        accept:'application/json',
+                        Authorization: 'Bearer ' + token,
+                    },
+                });
+                commit('SET_USER', response.data);
+            } catch (e) {
                 commit('SET_TOKEN', null);
                 commit('SET_USER', null);
+            }
+        },
+        logout({ commit }) {
+            return axios.get('api/auth/logout').then(() => {
+                commit('SET_TOKEN', null);
+                commit('SET_USER', null);
+                location.reload();
             });
         },
     },

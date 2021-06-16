@@ -8,7 +8,7 @@
                         <form @submit.prevent="submit">
                             <div class="form-group">
                                 <label class="col-form-label" for="email">Email:</label>
-                                <input type="text" name="email" id="email" v-model="form.email" />
+                                <input type="text" name="email" id="email" v-model="form.username" />
                             </div>
                             <div class="form-group">
                                 <label class="col-form-label" for="password">Password:</label>
@@ -31,7 +31,11 @@ export default {
     components: {},
     data() {
         return {
-            form: {},
+            form: {
+                client_id: '4',
+                client_secret: 'uViMUBP3duRdFvKSWDzs2HPwt0OKbZ9eR7axeX8J',
+                grant_type: "password",
+            },
         };
     },
     methods: {
