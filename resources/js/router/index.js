@@ -1,6 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from "../views/Home";
+import installationsObsoletes from "../views/installationsObsoletes";
+import MountainWilderness from "../views/MountainWilderness";
+import PrivacyPolicy from "../views/PrivacyPolicy";
+import Contact from "../views/Contact";
 import Admin from "../views/admin";
 import Installations from "../components/admin/installations";
 import Installation from "../components/admin/installation";
@@ -22,6 +26,26 @@ const routes = [
         path: '/home',
         name: 'Home',
         component: Home,
+    },
+    {
+        path: '/PrivacyPolicy',
+        name: 'PrivacyPolicy',
+        component: PrivacyPolicy,
+    },
+    {
+        path: '/MountainWilderness',
+        name: 'MountainWilderness',
+        component: MountainWilderness,
+    },
+    {
+        path: '/Contact',
+        name: 'Contact',
+        component: Contact,
+    },
+    {
+        path: '/installationsObsoletes',
+        name: 'installationsObsoletes',
+        component: installationsObsoletes,
     },
     {
         path: '/new',

@@ -10,6 +10,30 @@
                             >home</router-link
                             >
                         </li>
+                        <li class="scrolly" href="#header">
+                            <router-link
+                                to="/PrivacyPolicy"
+                            >PrivacyPolicy</router-link
+                            >
+                        </li>
+                        <li class="scrolly" href="#header">
+                            <router-link
+                                to="/Contact"
+                            >Contact</router-link
+                            >
+                        </li>
+                        <li class="scrolly" href="#header">
+                            <router-link
+                                to="/InstallationsObsoletes"
+                            >Installations Obsoletes</router-link
+                            >
+                        </li>
+                        <li class="scrolly" href="#header">
+                            <router-link
+                                to="/MountainWilderness"
+                            > Mountain Wilderness</router-link
+                            >
+                        </li>
 
                         <li v-if="!user" class="scrolly" href="#header">
                             <router-link

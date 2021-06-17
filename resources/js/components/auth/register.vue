@@ -61,27 +61,27 @@ export default {
             register: 'auth/register',
         }),
         submit() {
-            // this.register(this.form)
-            //     .then((response) => {
-            //     // this.$router.replace({
-            //     //     name: 'signin',
-            //     // });
-            //     alert(response.data.message);
-            // });
-            axios
-                .post('/api/auth/register', this.form)
+            this.register(this.form)
                 .then((response) => {
-                    // this.$router.replace({
-                    //     name: 'signin',
-                    // });
-                    alert(response.data.message);
-                })
-                .catch(error => {
-                    if (error.response.status == 422) {
-                        let objErrors = Object.values(error.response.data);
-                        this.errors = objErrors.flat();
-                    }
+                this.$router.replace({
+                    name: 'home',
                 });
+                alert(response.data.message);
+            });
+            // axios
+            //     .post('/api/auth/register', this.form)
+            //     .then((response) => {
+            //         // this.$router.replace({
+            //         //     name: 'signin',
+            //         // });
+            //         alert(response.data.message);
+            //     })
+            //     .catch(error => {
+            //         if (error.response.status == 422) {
+            //             let objErrors = Object.values(error.response.data);
+            //             this.errors = objErrors.flat();
+            //         }
+            //     });
         },
     },
 };

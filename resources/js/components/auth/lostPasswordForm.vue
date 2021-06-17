@@ -35,7 +35,8 @@ export default {
             sendPasswordLink: 'auth/sendPasswordLink',
         }),
         submit(){
-            axios.post('api/password/email', this.form)
+            this.sendPasswordLink(this.form);
+            //axios.post('api/password/email', this.form)
         }
 
     },
