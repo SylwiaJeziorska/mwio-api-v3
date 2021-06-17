@@ -74,6 +74,6 @@ export default {
             });
             commit('SET_USER', response.data.user);
 
-        }
+        },
     },
 };

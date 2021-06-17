@@ -9,11 +9,17 @@ import newInstallation from "../views/newInstallation";
 import userAccount from "../components/user/userAccount"
 import register from "../components/auth/register"
 import signIn from "../components/auth/signIn"
+import lostPasswordForm from "../components/auth/lostPasswordForm";
 Vue.use(VueRouter);
 
 const routes = [
     {
         path: '/',
+        name: 'Home',
+        component: Home,
+    },
+    {
+        path: '/home',
         name: 'Home',
         component: Home,
     },
@@ -60,6 +66,11 @@ const routes = [
         path: '/api/auth/signIn',
         name: 'signIn',
         component: signIn
+    },
+    {
+        path: '/api/auth/lostPasswordForm',
+        name: 'lostPasswordForm',
+        component: lostPasswordForm
     }
 ];
 
