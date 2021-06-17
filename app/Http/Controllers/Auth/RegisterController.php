@@ -103,14 +103,14 @@ class RegisterController extends Controller
             'prenome' => 'string|max:255|nullable',
             'status' => 'integer|nullable',
             'banni' => 'integer|nullable',
-            'role' => 'User',
         ]);
         $validatedData['password'] = bcrypt($request->password);
         $user = User::create($validatedData);
         $user->remember_token = Str::random(60);
+        $user->role = 'User';
         $user->save();
         $user->notify(new SignupActivate($user));
-        return response()->json(['success'=> true, 'message'=> 'Thanks for signing up! Please check your email to complete your registration.']);
+       return response()->json(['success'=> true, 'message'=> 'Thanks for signing up! Please check your email to complete your registration.']);
 
     }
 
@@ -127,8 +127,11 @@ class RegisterController extends Controller
                 'message' => 'This activation token is invalid.'
             ], 404);
         }
-        $user->verified = true;
-        $accessToken = $user->createToken('authToken')->accessToken;
-        return response()->json(['success'=> true, 'message'=> 'Thanks for signing up! Please check your email to complete your registration.']);
+        $user->verified = 1;
+        $user->createToken('authToken')->accessToken;
+        $user->save();
+        //add message!!!
+        return redirect('/')->with('success', 'your message,here');   ;
+
     }
 }

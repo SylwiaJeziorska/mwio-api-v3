@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { config } from '../config'
+
 export default {
     namespaced: true,
     state: {
@@ -23,9 +25,15 @@ export default {
         },
     },
     actions: {
-        async signIn({ dispatch, commit }, credentials) {
-            let response = await axios.post('/oauth/token', credentials);
+        register(credentials){
+            return  axios.post('/api/auth/register', credentials);
 
+        },
+        async signIn({ dispatch, commit }, credentials) {
+            credentials.client_id = config.client_id;
+            credentials.client_secret = config.client_secret;
+            credentials.grant_type = config.grant_type;
+            let response = await axios.post('/oauth/token', credentials);
             return dispatch('attempt', response.data.access_token);
         },
         async attempt({ commit, state }, token) {
@@ -49,8 +57,23 @@ export default {
             return axios.get('api/auth/logout').then(() => {
                 commit('SET_TOKEN', null);
                 commit('SET_USER', null);
-                location.reload();
+                return true;
             });
         },
+        async updateUser({ commit, state }, credentials){
+            credentials.client_id = config.client_id;
+            credentials.client_secret = config.client_secret;
+            credentials.grant_type = config.grant_type;
+
+            let response =  await axios.post('api/auth/update', {
+                headers: {
+                    accept:'application/json',
+                    Authorization: 'Bearer ' + state.token,
+                },
+                credentials
+            });
+            commit('SET_USER', response.data.user);
+
+        }
     },
 };
