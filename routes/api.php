@@ -1,11 +1,11 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\IoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\SignInController;
 
 
 
@@ -28,17 +28,15 @@ Route::group([
 });
 
 Route::group(['prefix'=> 'auth', 'namespace' => 'Auth'], function (){
-    Route::post('signIn', [SignInController::class, 'signIn']);
     Route::post('register', [RegisterController::class, 'registerUser']);
     Route::get('signup/activate/{token}', [RegisterController::class, 'signupActivate']);
     Route::group([
         'middleware' => 'auth:api',
     ], function () {
-        Route::get('user', [LoginController::class, 'user']);
         Route::get('logout', [LoginController::class, 'logout']);
-    });
+        Route::get('user', [UserController::class,'show']);
+        Route::post('update', [UserController::class,'update']);
 
-    //Route::post('signout', 'SignOutController');
-    //Route::get('me', 'MeController');
+    });
 });
 //Route::get('/user/verify/{token}', 'Auth\RegisterController@verifyUser');

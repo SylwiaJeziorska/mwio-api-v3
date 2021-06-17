@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Membres;
+namespace App\Http\Requests\Users;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Store extends FormRequest 
+class Store extends FormRequest
 {
 
     /**
@@ -12,7 +12,7 @@ class Store extends FormRequest
      *
      * @return bool
      */
-    public function authorize() 
+    public function authorize()
     {
         return true;
     }
@@ -22,7 +22,7 @@ class Store extends FormRequest
      *
      * @return array
      */
-    public function rules() 
+    public function rules()
     {
         return [
 			'identifiant' => 'required|max:20',
@@ -50,7 +50,7 @@ class Store extends FormRequest
     public function messages()
     {
         return [
-     
+
         ];
     }
 

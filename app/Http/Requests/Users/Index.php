@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Membres;
+namespace App\Http\Requests\Users;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Edit extends FormRequest 
+class Index extends FormRequest
 {
 
     /**
@@ -12,7 +12,7 @@ class Edit extends FormRequest
      *
      * @return bool
      */
-    public function authorize() 
+    public function authorize()
     {
         return true;
     }
@@ -22,7 +22,7 @@ class Edit extends FormRequest
      *
      * @return array
      */
-    public function rules() 
+    public function rules()
     {
         return [
 
@@ -37,7 +37,7 @@ class Edit extends FormRequest
     public function messages()
     {
         return [
-     
+
         ];
     }
 

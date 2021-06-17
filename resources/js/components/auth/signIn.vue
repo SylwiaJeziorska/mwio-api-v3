@@ -18,6 +18,12 @@
                         </form>
                     </div>
                 </div>
+                <li>
+                    <router-link
+                        :to="{ name: 'register' }"
+                    >register</router-link
+                    >
+                </li>
             </div>
         </div>
     </div>
@@ -31,11 +37,7 @@ export default {
     components: {},
     data() {
         return {
-            form: {
-                client_id: '4',
-                client_secret: 'uViMUBP3duRdFvKSWDzs2HPwt0OKbZ9eR7axeX8J',
-                grant_type: "password",
-            },
+            form:{},
         };
     },
     methods: {

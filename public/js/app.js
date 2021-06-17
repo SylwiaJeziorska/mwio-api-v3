@@ -1903,7 +1903,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../router */ "./resources/js/router/index.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -1954,21 +1955,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'NavComponent',
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)({
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapGetters)({
     user: 'auth/user'
   })),
-  methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)({
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)({
     logout: 'auth/logout'
-  })),
+  })), {}, {
+    signOut: function signOut() {
+      this.logout().then(function () {
+        _router__WEBPACK_IMPORTED_MODULE_0__.default.replace({
+          name: 'Home'
+        })["catch"](function () {});
+      });
+    }
+  }),
   mounted: function mounted() {}
 });
 
@@ -2917,6 +2922,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2962,6 +2974,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'register',
@@ -2971,10 +2984,19 @@ __webpack_require__.r(__webpack_exports__);
       errors: null
     };
   },
-  methods: {
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)({
+    register: 'auth/register'
+  })), {}, {
     submit: function submit() {
       var _this = this;
 
+      // this.register(this.form)
+      //     .then((response) => {
+      //     // this.$router.replace({
+      //     //     name: 'signin',
+      //     // });
+      //     alert(response.data.message);
+      // });
       axios__WEBPACK_IMPORTED_MODULE_0___default().post('/api/auth/register', this.form).then(function (response) {
         // this.$router.replace({
         //     name: 'signin',
@@ -2987,7 +3009,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     }
-  }
+  })
 });
 
 /***/ }),
@@ -3035,6 +3057,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
 // @ is an alias to /src
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -3042,11 +3070,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   components: {},
   data: function data() {
     return {
-      form: {
-        client_id: '4',
-        client_secret: 'uViMUBP3duRdFvKSWDzs2HPwt0OKbZ9eR7axeX8J',
-        grant_type: "password"
-      }
+      form: {}
     };
   },
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)({
@@ -4445,12 +4469,40 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'User',
+  data: function data() {
+    return {};
+  },
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)({
-    user: 'installations/user'
-  }))
+    user: 'auth/user'
+  })),
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)({
+    updateUser: 'auth/updateUser'
+  })), {}, {
+    submit: function submit() {
+      var _this = this;
+
+      this.updateUser(this.user).then(function () {
+        _this.$router.replace({
+          name: 'Home'
+        });
+      });
+    }
+  })
 });
 
 /***/ }),
@@ -4848,6 +4900,25 @@ var mapState = {
 
 /***/ }),
 
+/***/ "./resources/js/config.js":
+/*!********************************!*\
+  !*** ./resources/js/config.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "config": () => (/* binding */ config)
+/* harmony export */ });
+var config = {
+  client_id: '4',
+  client_secret: 'uViMUBP3duRdFvKSWDzs2HPwt0OKbZ9eR7axeX8J',
+  grant_type: "password"
+};
+
+/***/ }),
+
 /***/ "./resources/js/router/index.js":
 /*!**************************************!*\
   !*** ./resources/js/router/index.js ***!
@@ -4947,11 +5018,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../config */ "./resources/js/config.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -4977,6 +5050,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   actions: {
+    register: function register(credentials) {
+      return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/auth/register', credentials);
+    },
     signIn: function signIn(_ref, credentials) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         var dispatch, commit, response;
@@ -4985,14 +5061,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 dispatch = _ref.dispatch, commit = _ref.commit;
-                _context.next = 3;
+                credentials.client_id = _config__WEBPACK_IMPORTED_MODULE_2__.config.client_id;
+                credentials.client_secret = _config__WEBPACK_IMPORTED_MODULE_2__.config.client_secret;
+                credentials.grant_type = _config__WEBPACK_IMPORTED_MODULE_2__.config.grant_type;
+                _context.next = 6;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/oauth/token', credentials);
 
-              case 3:
+              case 6:
                 response = _context.sent;
                 return _context.abrupt("return", dispatch('attempt', response.data.access_token));
 
-              case 5:
+              case 8:
               case "end":
                 return _context.stop();
             }
@@ -5047,8 +5126,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return axios__WEBPACK_IMPORTED_MODULE_1___default().get('api/auth/logout').then(function () {
         commit('SET_TOKEN', null);
         commit('SET_USER', null);
-        location.reload();
+        return true;
       });
+    },
+    updateUser: function updateUser(_ref4, credentials) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        var commit, state, response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                commit = _ref4.commit, state = _ref4.state;
+                credentials.client_id = _config__WEBPACK_IMPORTED_MODULE_2__.config.client_id;
+                credentials.client_secret = _config__WEBPACK_IMPORTED_MODULE_2__.config.client_secret;
+                credentials.grant_type = _config__WEBPACK_IMPORTED_MODULE_2__.config.grant_type;
+                _context3.next = 6;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().post('api/auth/update', {
+                  headers: {
+                    accept: 'application/json',
+                    Authorization: 'Bearer ' + state.token
+                  },
+                  credentials: credentials
+                });
+
+              case 6:
+                response = _context3.sent;
+                commit('SET_USER', response.data.user);
+
+              case 8:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
     }
   }
 });
@@ -79387,21 +79498,6 @@ var render = function() {
                     "li",
                     { staticClass: "scrolly", attrs: { href: "#header" } },
                     [
-                      _c(
-                        "router-link",
-                        { attrs: { to: { name: "register" } } },
-                        [_vm._v("register")]
-                      )
-                    ],
-                    1
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              !_vm.user
-                ? _c(
-                    "li",
-                    { staticClass: "scrolly", attrs: { href: "#header" } },
-                    [
                       _c("router-link", { attrs: { to: { name: "signIn" } } }, [
                         _vm._v("signIn")
                       ])
@@ -79455,7 +79551,7 @@ var render = function() {
               _vm._v(" "),
               _vm.user
                 ? _c("li", [
-                    _c("span", { on: { click: _vm.logout } }, [
+                    _c("span", { on: { click: _vm.signOut } }, [
                       _vm._v("logout")
                     ])
                   ])
@@ -81928,7 +82024,17 @@ var render = function() {
               ]
             )
           ])
-        ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "li",
+          [
+            _c("router-link", { attrs: { to: { name: "register" } } }, [
+              _vm._v("register")
+            ])
+          ],
+          1
+        )
       ])
     ])
   ])
@@ -84918,87 +85024,191 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col-md-10 offset-md-2 mt-5" }, [
-      _c("form", [
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", [_vm._v("Nom")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.user.name,
-                expression: "user.name"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { id: "nombre", maxlength: "20" },
-            domProps: { value: _vm.user.name },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+  return _c("div", { staticClass: "row justify-content-center" }, [
+    _c("div", { staticClass: "col-md-6 ofsset-md-3 jumbotron" }, [
+      _c("div", { staticClass: "card card-log" }, [
+        _c("div", { staticClass: "card-body" }, [
+          _c(
+            "form",
+            {
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.submit($event)
                 }
-                _vm.$set(_vm.user, "name", $event.target.value)
               }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "prenom" } }, [_vm._v("Prénom")]),
-          _vm._v(" "),
-          _c("input", {
-            attrs: {
-              type: "text",
-              placeholder: _vm.user.prenome,
-              maxlength: "20"
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "mail" } }, [_vm._v("Email")]),
-          _vm._v(" "),
-          _c("input", {
-            attrs: { type: "text", placeholder: _vm.user.email, readonly: "" }
-          })
-        ]),
-        _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
-        _vm._m(1)
+            },
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.user.id,
+                    expression: "user.id"
+                  }
+                ],
+                attrs: { type: "hidden", id: "id", maxlength: "20" },
+                domProps: { value: _vm.user.id },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.user, "id", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("div", [
+                _c("label", [_vm._v("Nom ")]),
+                _c("br"),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.user.name,
+                      expression: "user.name"
+                    }
+                  ],
+                  attrs: { id: "nombre", maxlength: "20" },
+                  domProps: { value: _vm.user.name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.user, "name", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c("label", { attrs: { for: "prenome" } }, [_vm._v("Prénom")]),
+                _c("br"),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.user.prenome,
+                      expression: "user.prenome"
+                    }
+                  ],
+                  attrs: { type: "text", maxlength: "20" },
+                  domProps: { value: _vm.user.prenome },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.user, "prenome", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c("label", [_vm._v("Email")]),
+                _c("br"),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: {
+                    type: "text",
+                    placeholder: _vm.user.email,
+                    readonly: ""
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c("label", [
+                  _vm._v(
+                    "\n                            Mot de passe\n                        "
+                  )
+                ]),
+                _c("br"),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.user.password,
+                      expression: "user.password"
+                    }
+                  ],
+                  attrs: {
+                    type: "password",
+                    name: "password-confirmation",
+                    id: "password-confirmation"
+                  },
+                  domProps: { value: _vm.user.password },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.user, "password", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c("label", [_vm._v("Confirmez le mot de passe")]),
+                _c("br"),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.user.password_confirmation,
+                      expression: "user.password_confirmation"
+                    }
+                  ],
+                  attrs: {
+                    type: "password",
+                    name: "password-confirmation",
+                    id: "password-confirmation"
+                  },
+                  domProps: { value: _vm.user.password_confirmation },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.user,
+                        "password_confirmation",
+                        $event.target.value
+                      )
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-long btn-success",
+                    attrs: { type: "submit" }
+                  },
+                  [_vm._v("????")]
+                )
+              ])
+            ]
+          )
+        ])
       ])
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", { staticClass: "form-check-label" }, [
-        _vm._v("\n                  new password\n                ")
-      ]),
-      _c("br"),
-      _vm._v(" "),
-      _c("input", { attrs: { type: "text" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", [_vm._v("Confirm")]),
-      _vm._v(" "),
-      _c("input", { attrs: { type: "text" } })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

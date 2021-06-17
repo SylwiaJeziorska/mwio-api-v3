@@ -1,47 +1,75 @@
 <template>
-    <div class="row">
-        <div class="col-md-10 offset-md-2 mt-5">
-            <form>
-                <div class="form-group">
-                    <label>Nom</label>
-                    <input id="nombre" v-model="user.name" class="form-control" maxlength="20">
-                </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6 ofsset-md-3 jumbotron">
+            <div class="card card-log">
+                <div class="card-body">
+                    <form @submit.prevent="submit">
+                        <input type="hidden" id="id" v-model="user.id" maxlength="20">
 
-                <div class="form-group">
-                    <label for="prenom">Prénom</label>
-                    <input type="text" :placeholder="user.prenome" maxlength="20">
-                </div>
-                <div class="form-group">
-                    <label for="mail">Email</label>
-                    <input type="text" :placeholder="user.email"
-                    readonly >
-                </div>
-                <div class="form-group">
-                    <label class="form-check-label" >
-                      new password
-                    </label><br/>
-                    <input type="text">
+                        <div>
+                            <label>Nom </label><br>
+                            <input id="nombre" v-model="user.name" maxlength="20">
+                        </div>
 
-                </div>
-                <div class="form-group">
-                    <label>Confirm</label>
-                    <input type="text">
+                        <div>
+                            <label for="prenome">Prénom</label><br>
+                            <input type="text" v-model="user.prenome" maxlength="20">
+                        </div>
+                        <div>
+                            <label>Email</label><br>
+                            <input type="text" :placeholder="user.email"
+                            readonly >
+                        </div>
+                        <div>
+                            <label >
+                                Mot de passe
+                            </label><br/>
+                            <input type="password"
+                                   name="password-confirmation"
+                                   id="password-confirmation"
+                                   v-model="user.password">
 
+                        </div>
+                        <div>
+                            <label>Confirmez le mot de passe</label><br>
+                            <input type="password"
+                                   name="password-confirmation"
+                                   id="password-confirmation"
+                                   v-model="user.password_confirmation">
+                            <button class="btn btn-long btn-success" type="submit">????</button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
 
     </div>
 </template>
 <script>
-import {mapGetters} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
     name: 'User',
+    data() {
+        return {
+        };
+    },
     computed: {
         ...mapGetters({
-            user: 'installations/user',
+            user: 'auth/user',
         }),
     },
+        methods: {
+            ...mapActions({
+                updateUser: 'auth/updateUser',
+            }),
+            submit() {
+                this.updateUser(this.user).then(() => {
+                    this.$router.replace({
+                        name: 'Home',
+                    });
+                });
+            },
+        },
 }
 </script>

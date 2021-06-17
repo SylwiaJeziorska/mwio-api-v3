@@ -45,6 +45,7 @@
 </template>
 <script>
 import axios from 'axios';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'register',
@@ -56,7 +57,17 @@ export default {
         };
     },
     methods: {
+        ...mapActions({
+            register: 'auth/register',
+        }),
         submit() {
+            // this.register(this.form)
+            //     .then((response) => {
+            //     // this.$router.replace({
+            //     //     name: 'signin',
+            //     // });
+            //     alert(response.data.message);
+            // });
             axios
                 .post('/api/auth/register', this.form)
                 .then((response) => {
