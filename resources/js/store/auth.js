@@ -25,7 +25,7 @@ export default {
         },
     },
     actions: {
-        register(credentials){
+        register({commit}, credentials){
             return  axios.post('/api/auth/register', credentials);
 
         },
@@ -75,5 +75,8 @@ export default {
             commit('SET_USER', response.data.user);
 
         },
+        async sendPasswordLink ({commit},credentials){
+             await axios.post('api/password/email', credentials)
+        }
     },
 };
