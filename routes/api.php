@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\IoController;
@@ -40,3 +41,5 @@ Route::group(['prefix'=> 'auth', 'namespace' => 'Auth'], function (){
     });
 });
 //Route::get('/user/verify/{token}', 'Auth\RegisterController@verifyUser');
+Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
+

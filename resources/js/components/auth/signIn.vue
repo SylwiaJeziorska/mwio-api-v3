@@ -24,6 +24,12 @@
                     >register</router-link
                     >
                 </li>
+                <li>
+                    <router-link
+                        :to="{ name: 'lostPasswordForm' }"
+                    >Mot de passe perdu</router-link
+                    >
+                </li>
             </div>
         </div>
     </div>
