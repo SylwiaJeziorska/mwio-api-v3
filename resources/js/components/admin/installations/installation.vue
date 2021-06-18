@@ -376,7 +376,7 @@
                             </p>
                         </div>
                         <div class="form-group text-right col-lg-6 col-md-12">
-                            <input type="submit" id="save" class="btn btn-success btn-lg ave w-100" value="Sauvegarder" onclick="return empty()" />
+                            <input type="submit" id="save" class="btn btn-success btn-lg ave w-100" value="Sauvegarder"/>
                         </div>
                     </div>
                 </form>
@@ -394,9 +394,9 @@
     </div>
 </template>
 <script>
-import SingleInstallationMap from "../maps/singleInstallationMap";
+import SingleInstallationMap from "../../maps/singleInstallationMap";
 import moment from "moment";
-import NewInstallationMap from "../maps/newInstallationMap";
+import NewInstallationMap from "../../maps/newInstallationMap";
 export default {
     name: "installation",
     components: {NewInstallationMap, SingleInstallationMap},
@@ -488,7 +488,7 @@ export default {
         };
     },
     methods: {
-        deleteFile: function() {
+        deleteFile: function(item) {
             // this.files.splice(this.files.indexOf(item), 1);
             let test = this.filesNames.indexOf(item);
             this.filesNames.splice(this.files.indexOf(item), 1);
@@ -525,7 +525,7 @@ export default {
             fd.append("fields", JSON.stringify(this.fields));
             fd.append("_method", "PATCH");
             axios
-                .post("/ios/" + this.fields.id, fd, {
+                .post("api/ios/" + this.fields.id, fd, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },

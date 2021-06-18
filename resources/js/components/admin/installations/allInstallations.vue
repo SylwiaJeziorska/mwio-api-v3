@@ -105,7 +105,7 @@
 import {mapActions} from "vuex";
 
 export default {
-    name: "installations",
+    name: "allInstallations",
     props: ["iosCollection"],
     data() {
         return {

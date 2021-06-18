@@ -1,9 +1,9 @@
 <template>
     <div class="container nav">
-        <div class="app-wraper">
+        <div class="app-wraper vw-100">
             <div class="row nav-row">
-                <nav id="nav">
-                    <ul class="links">
+                <nav id="nav" class="vw-100">
+                    <ul class="links d-flex flex-row justify-content-between">
                         <li class="scrolly" href="#header">
                             <router-link
                                 to="/"
@@ -30,7 +30,7 @@
                         </li>
                         <li class="scrolly" href="#header">
                             <router-link
-                                to="/MountainWilderness"
+                                :to="{name:'MountainWilderness'}"
                             > Mountain Wilderness</router-link
                             >
                         </li>
@@ -43,12 +43,11 @@
                         </li>
                         <li v-if="user" class="scrolly" href="#header">
                             <router-link
-                                to="/new"
-                            >new</router-link
+                                :to="{ name: 'newInstallation' }">new</router-link
                             >
                         </li>
-                        <li v-if="user">
-                            <router-link :to="{ name: 'Admin' }">
+                        <li v-if="user" >
+                            <router-link :to="{ name: 'Installations' }">
                                 <span>Admin</span></router-link>
                         </li>
                         <li v-if="user">

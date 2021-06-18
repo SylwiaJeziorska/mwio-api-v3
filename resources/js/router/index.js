@@ -5,9 +5,10 @@ import installationsObsoletes from "../views/installationsObsoletes";
 import MountainWilderness from "../views/MountainWilderness";
 import PrivacyPolicy from "../views/PrivacyPolicy";
 import Contact from "../views/Contact";
-import Admin from "../views/admin";
-import Installations from "../components/admin/installations";
-import Installation from "../components/admin/installation";
+//import Admin from "../views/admin";
+//import Installations from "../components/admin/installations/nstallations";
+import Partners from "../components/admin/partners/partners";
+import Installations from "../components/admin/installations/installations";
 import singleInstallation from "../views/singleInstallation";
 import newInstallation from "../views/newInstallation";
 import userAccount from "../components/user/userAccount"
@@ -43,6 +44,11 @@ const routes = [
         component: Contact,
     },
     {
+        path: '/Partners',
+        name: 'Partners',
+        component: Partners,
+    },
+    {
         path: '/installationsObsoletes',
         name: 'installationsObsoletes',
         component: installationsObsoletes,
@@ -58,23 +64,9 @@ const routes = [
         component: singleInstallation,
     },
     {
-        path: "/admin",
-        name: "Admin",
-        component: Admin,
-        children: [
-            {
-                path: "/admin/installations",
-                name: "Installations",
-                component: Installations,
-                props: true
-            },
-            {
-                path: "/admin/installation/:id",
-                name: "Installation",
-                component: Installation,
-                props: true
-            },
-        ]
+        path: "/admin/installations",
+        name: "Installations",
+        component: Installations,
     },
     {
         path: '/user/:id',

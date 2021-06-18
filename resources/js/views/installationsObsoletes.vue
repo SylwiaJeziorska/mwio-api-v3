@@ -171,12 +171,7 @@
                             <p class="text-uppercase p-2">Partenaires</p>
                         </div>
                     </div>
-                    <!--
-                   <div class="row">
-                     <contactForm></contactForm>
-                   </div> -->
                     <div class="row justify-content-around">
-
                         <div class="">
                             <img
                                 class="logo-partners"

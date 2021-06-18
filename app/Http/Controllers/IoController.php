@@ -61,20 +61,21 @@ class IoController extends Controller
         array_push($response, $contributors);
         return response()->json($response);
 
-    }    /**
-     * Show the form for creating a new resource.
-     *
-     * @param  Create  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Create $request)
-    {
-
-        return view('pages.io.create', [
-            'model' => new Io,
-
-        ]);
     }
+//    /**
+//     * Show the form for creating a new resource.
+//     *
+//     * @param  Create  $request
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function create(Create $request)
+//    {
+//
+//        return view('pages.io.create', [
+//            'model' => new Io,
+//
+//        ]);
+//    }
     /**
      * Store a newly created resource in storage.
      *

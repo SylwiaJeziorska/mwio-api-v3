@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\IoController;
+use App\Http\Controllers\PartnerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
@@ -44,4 +45,5 @@ Route::group(['prefix'=> 'auth', 'namespace' => 'Auth'], function (){
 //Route::get('/user/verify/{token}', 'Auth\RegisterController@verifyUser');
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 Route::post('/contact', [ContactController::class, 'store']);
+Route::resource('/partners', PartnerController::class);
 
