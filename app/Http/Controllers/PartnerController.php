@@ -99,6 +99,6 @@ class PartnerController extends Controller
         $destinationPath = 'imgs/partners';
         File::delete($destinationPath.'/'.$partner->logo_name);
 
-        return redirect()->back();
+        //return redirect()->back();
     }
 }

@@ -3076,8 +3076,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)({
     removePartner: 'partners/removePartner'
   })), {}, {
-    removeImage: function removeImage(id) {
+    removeImage: function removeImage(id, idx) {
       this.removePartner(id);
+      this.partners.splice(idx, 1);
     }
   })
 });
@@ -83771,7 +83772,7 @@ var render = function() {
     _c(
       "div",
       { staticClass: "d-flex flex-column" },
-      _vm._l(_vm.partners, function(partner) {
+      _vm._l(_vm.partners, function(partner, idx) {
         return _c("div", [
           _c("p", [_vm._v(_vm._s(partner.name))]),
           _vm._v(" "),
@@ -83790,7 +83791,7 @@ var render = function() {
               {
                 on: {
                   click: function($event) {
-                    return _vm.removeImage(partner.id)
+                    return _vm.removeImage(partner.id, idx)
                   }
                 }
               },
