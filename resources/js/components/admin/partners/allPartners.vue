@@ -1,13 +1,19 @@
 <template>
 <div class="container">
-    <div class="d-flex justify-content-between">
+    <div class="d-flex flex-column">
         <div v-for="partner in partners">
             <p>{{partner.name}}</p>
-            <img :src="'imgs/partners/' + partner.logo_name" height="150px" />
-            <div >
+            <div>
+                <img :src="'imgs/partners/' + partner.logo_name" height="150px" />
+
+            </div>
+            <div class="mt-2">
                 <button @click="removeImage(partner.id)">&#x274C;</button>
             </div>
+            <hr>
+
         </div>
+
     </div>
 
 </div>
@@ -22,7 +28,6 @@ export default {
             removePartner: 'partners/removePartner',
         }),
         removeImage(id){
-            alert(id);
             this.removePartner(id);
         }
     }

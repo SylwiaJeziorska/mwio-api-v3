@@ -9,6 +9,7 @@ import Contact from "../views/Contact";
 //import Installations from "../components/admin/installations/nstallations";
 import Partners from "../components/admin/partners/partners";
 import Installations from "../components/admin/installations/installations";
+import Installation from "../components/admin/installations/installation";
 import singleInstallation from "../views/singleInstallation";
 import newInstallation from "../views/newInstallation";
 import userAccount from "../components/user/userAccount"
@@ -59,7 +60,7 @@ const routes = [
         component: newInstallation,
     },
     {
-        path: '/installation/:id',
+        path: '/',
         name: 'singleInstallation',
         component: singleInstallation,
     },
@@ -67,6 +68,11 @@ const routes = [
         path: "/admin/installations",
         name: "Installations",
         component: Installations,
+    },
+    {
+        path: "/admin/installation/:id",
+        name: "Installation",
+        component: Installation,
     },
     {
         path: '/user/:id',

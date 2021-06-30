@@ -16,6 +16,9 @@ use App\Http\Requests\Io\Edit;
 use App\Http\Requests\Io\Update;
 use App\Http\Requests\Io\Destroy;
 use Grimzy\LaravelMysqlSpatial\Eloquent\SpatialTrait;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+
 
 
 /**
@@ -32,7 +35,7 @@ class IoController extends Controller
      * @param  Index  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Index $request)
+    public function index()
     {
 
         $ios = Io::all();
@@ -46,7 +49,7 @@ class IoController extends Controller
      * @param  Io  $io
      * @return \Illuminate\Http\Response
      */
-    public function show(Show $request, Io $io)
+    public function show(Io $io)
     {
         $media = $io->media()->get();
         $contributors = [];
@@ -84,26 +87,26 @@ class IoController extends Controller
      */
     public function store(Store $request)
     {
-
         $fieldsData = json_decode($request->fields, TRUE);
         //$class = implode(',', (array) $fieldsData['classe']);
         $model= new Io;
         $model->fill($fieldsData);
       // $model->classe = $class;
         $model->save();
-
         if($medias = $request->file()){
             $this->crateMedia($medias, $model);
         }
-        if ($model->save()) {
-
-            session()->flash('app_message', 'Io saved successfully');
-           // return redirect()->route('io.index');
-            } else {
-                session()->flash('app_message', 'Something is wrong while saving Io');
-            }
+        $this->validateIoForAdmin($model->id);
        // return redirect()->back();
     }
+
+        public function validateIoForAdmin($id){
+            $role = Auth::user()->role;
+            if($role == 'Admin' || $role == 'super-admin'){
+                Io::where('id', $id)->update(array('validee' => 1));
+            }
+        }
+
 //    /**
 //     * Show the form for editing the specified resource.
 //     *
@@ -127,19 +130,26 @@ class IoController extends Controller
     public function update(Update $request,Io $io)
     {
         $fieldsData = json_decode($request->fields, TRUE);
-
         $io->fill($fieldsData);
         if($medias = $request->file()){
             $this->crateMedia($medias, $io);
         }
 
-        if ($io->save()) {
+        /**
+         *  destroy media
+         */
+        $toDelet = $fieldsData['delete'];
+        if ($toDelet !== NULL) {
+            foreach ($toDelet as $mediaId) {
+                $media = Medium::find($mediaId);
+                $name = $media->file_name;
+                File::delete('img/' . $name);
 
-            session()->flash('app_message', 'Io successfully updated');
-          //  return redirect()->route('io.index');
-            } else {
-                session()->flash('app_error', 'Something is wrong while updating Io');
+                Medium::destroy($mediaId);
             }
+        }
+        $io->save();
+
 
         return redirect()->back();
     }    /**

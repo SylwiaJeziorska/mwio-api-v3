@@ -42,6 +42,10 @@
                     <p class="btn btn-success pl-2 pr-2" @click="getIOFiles(i.id, index)">
                         Modifier
                     </p>
+<!--                    <li>-->
+<!--                        <router-link :to="{ name: 'Installation', params: { id: i.id } }">-->
+<!--                            <span>Mohoiohoi</span></router-link>-->
+<!--                    </li>-->
                 </td>
 
                 <td v-if="i['properties'].validee == tovalider&& i['properties'].a_valider<2 || i['properties'].a_valider==banished">

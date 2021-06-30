@@ -171,51 +171,66 @@
                             <p class="text-uppercase p-2">Partenaires</p>
                         </div>
                     </div>
-                    <div class="row justify-content-around">
-                        <div class="">
-                            <img
-                                class="logo-partners"
-                                src="/imgs/LogoDREAL-ARA.jpg"
-                                height="90px"
-                            />
+                    <div id="demo" class="carousel slide" data-ride="carousel">
+                        <!--       <ul class="carousel-indicators">
+                              <li data-target="#demo" data-slide-to="{idx}" v-for="(img,idx) in io.media" :class="{ active: idx==0 }"></li>
+                        </ul>-->
+                        <div class="carousel-inner embed-responsive embed-responsive-21by9">
+                            <div
+                                class="carousel-item embed-responsive-item"
+                                v-for="(img, idx) in partners"
+                                :key="idx"
+                                :class="{ active: idx == 0 }"
+                                v-bind:style="{ backgroundImage: 'url(imgs/partners/' + img.logo_name + ')', backgroundSize: bgSize }"
+                            ></div>
                         </div>
                     </div>
-                    <div class="row justify-content-around">
-                        <div class="">
-                            <img
-                                class="logo-partners"
-                                src="/imgs/logo-Reegion-Sud.jpg"
-                                height="90px"
-                            />
-                        </div>
-                    </div>
-                    <div class="row justify-content-around">
-                        <div class="">
-                            <img
-                                class="logo-partners"
-                                src="/imgs/logo-fondation-petzl-noir.jpg"
-                                height="90px"
-                            />
-                        </div>
-                    </div>
-                    <div class="row justify-content-around">
-                        <div class="">
-                            <img
-                                class="logo-partners"
-                                src="/imgs/EcoleCentraleLyon.jpg"
-                                height="90px"
-                            />
-                        </div>
-                    </div>
-                    <div class="row justify-content-around">
-                        <div class="">
-                            <img
-                                class="logo-partners"
-                                src="/imgs/alpes.png"
-                                height="90px"
-                            />
-                        </div>
-                    </div>
+
+<!--                    <div class="row justify-content-around">-->
+<!--                        <div class="">-->
+<!--                            <img-->
+<!--                                class="logo-partners"-->
+<!--                                src="/imgs/LogoDREAL-ARA.jpg"-->
+<!--                                height="90px"-->
+<!--                            />-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="row justify-content-around">-->
+<!--                        <div class="">-->
+<!--                            <img-->
+<!--                                class="logo-partners"-->
+<!--                                src="/imgs/logo-Reegion-Sud.jpg"-->
+<!--                                height="90px"-->
+<!--                            />-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="row justify-content-around">-->
+<!--                        <div class="">-->
+<!--                            <img-->
+<!--                                class="logo-partners"-->
+<!--                                src="/imgs/logo-fondation-petzl-noir.jpg"-->
+<!--                                height="90px"-->
+<!--                            />-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="row justify-content-around">-->
+<!--                        <div class="">-->
+<!--                            <img-->
+<!--                                class="logo-partners"-->
+<!--                                src="/imgs/EcoleCentraleLyon.jpg"-->
+<!--                                height="90px"-->
+<!--                            />-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="row justify-content-around">-->
+<!--                        <div class="">-->
+<!--                            <img-->
+<!--                                class="logo-partners"-->
+<!--                                src="/imgs/alpes.png"-->
+<!--                                height="90px"-->
+<!--                            />-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>
@@ -225,22 +240,41 @@
 </template>
 
 <script type="text/javascript">
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
-    props: ["authuser"],
-    name: "app_container",
-
+    name: "installationObsoletes",
     data: function () {
         return {
             height: 400,
+            bgSize:"contain"
+
         };
     },
-
-    created() {},
+    methods: {
+            ...mapActions({
+                getPartners: 'partners/partners',
+            }),
+    },
+    computed: {
+        ...mapGetters({
+            partners: 'partners/partners',
+        }),
+    },
+    mounted() {
+        this.getPartners();
+        $(".carousel").carousel({
+            interval: 1000,
+        });
+    },
 };
 </script>
 <style media="screen">
 iframe {
     height: 500px;
 }
+ .carousel-item{
+     background-repeat: no-repeat;
+     background-position: center;
+ }
 </style>

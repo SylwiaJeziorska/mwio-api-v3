@@ -19,7 +19,7 @@
 
                         </div>
                         <div v-if="partner.image">
-                            <img :src="partner.image" />
+                            <img :src="partner.image" height="200"/>
                             <button @click="removeImage">&#x274C;</button>
                         </div>
 
