@@ -375,7 +375,7 @@
     </div>
 </template>
 <script>
-import { mapActions } from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
     props: ["situation"],
@@ -384,7 +384,6 @@ export default {
         return {
             auth: "",
             fields: {
-                id_membre: this.auth,
                 classe: [],
                 lieu_dit: "",
                 origine: "Inconnue",
@@ -451,7 +450,9 @@ export default {
                     "veuillez pointer sur la carte la position précise de l'installation"
                 );
             }
-            e.preventDefault();
+            this.fields.id_membre = this.user.id;
+
+                e.preventDefault();
             let currentObj = this;
             const fd = new FormData();
             for (let i = 0; i < this.files.length; i++) {
@@ -471,6 +472,11 @@ export default {
         situation: function (newQuestion) {
            this.fields.situation = newQuestion;
         }
+    },
+    computed: {
+        ...mapGetters({
+            user: 'auth/user',
+        }),
     },
 }
 </script>

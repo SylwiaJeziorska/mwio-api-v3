@@ -36,7 +36,6 @@ export default {
         }),
         submit(){
             this.sendPasswordLink(this.form);
-            //axios.post('api/password/email', this.form)
         }
 
     },

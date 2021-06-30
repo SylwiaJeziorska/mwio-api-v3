@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import installations from "./installations";
+import partners from "./partners";
 import auth from "./auth";
 import mapState from "./mapState";
 
@@ -18,5 +19,6 @@ export default new Vuex.Store({
         installations,
         mapState,
         auth,
+        partners
     }
 })

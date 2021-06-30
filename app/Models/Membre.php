@@ -17,34 +17,34 @@ use Illuminate\Database\Eloquent\Model;
 @property int $nombre_attentes_validation nombre attentes validation
 @property varchar $hash_mail hash mail
 @property varchar $hash_mdp hash mdp
-   
- */
-class Membre extends Model 
-{
-    
-    /**
-    * Database table name
-    */
-    protected $table = 'membres';
 
-    /**
-    * Mass assignable columns
-    */
-    protected $fillable=['hash_mdp',
-'identifiant',
-'nom',
-'prenom',
-'mail',
-'mail_verif',
-'mdp',
-'adresse',
-'tel',
-'date_inscription',
-'statut_membre',
-'banni',
-'nombre_attentes_validation',
-'hash_mail',
-'hash_mdp'];
+ */
+class Membre extends Model
+{
+
+/**
+* Database table name
+*/
+protected $table = 'membres';
+
+/**
+* Mass assignable columns
+*/
+protected $fillable=['hash_mdp',
+    'identifiant',
+    'nom',
+    'prenom',
+    'mail',
+    'mail_verif',
+    'mdp',
+    'adresse',
+    'tel',
+    'date_inscription',
+    'statut_membre',
+    'banni',
+    'nombre_attentes_validation',
+    'hash_mail',
+    'hash_mdp'];
 
     /**
     * Date time columns.

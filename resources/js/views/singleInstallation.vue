@@ -46,7 +46,7 @@ export default {
         this.getIo(this.$route.params.id);
     },
     mounted() {
-
+        
     },
     computed: {
         ...mapGetters({

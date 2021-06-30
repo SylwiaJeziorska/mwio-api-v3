@@ -376,7 +376,7 @@
                             </p>
                         </div>
                         <div class="form-group text-right col-lg-6 col-md-12">
-                            <input type="submit" id="save" class="btn btn-success btn-lg ave w-100" value="Sauvegarder" onclick="return empty()" />
+                            <input type="submit" id="save" class="btn btn-success btn-lg ave w-100" value="Sauvegarder"/>
                         </div>
                     </div>
                 </form>
@@ -388,19 +388,22 @@
             </div>
         </div>
         <div class="col-md-8">
-            <single-installation-map :io="true" :lat-lng="marker"></single-installation-map>
-            <new-installation-map :test="marker"> </new-installation-map>
+            <!-- <single-installation-map :io="true" :lat-lng="marker"></single-installation-map> -->
+            <!-- <new-installation-map :lat-lng="marker"> </new-installation-map> -->
+            <update-installation-map :io="true" :lat-lng="marker" @mymarker="addMarker($event)"></update-installation-map>
         </div>
     </div>
 </template>
 <script>
-import SingleInstallationMap from "../maps/singleInstallationMap";
+import SingleInstallationMap from "../../maps/singleInstallationMap";
 import moment from "moment";
-import NewInstallationMap from "../maps/newInstallationMap";
+import NewInstallationMap from "../../maps/newInstallationMap";
+import UpdateInstallationMap from "../../maps/updateInstallationMap";
+import {mapActions, mapGetters} from "vuex";
 export default {
     name: "installation",
-    components: {NewInstallationMap, SingleInstallationMap},
-    props: ["fields", "marker"],
+    components: {UpdateInstallationMap, NewInstallationMap, SingleInstallationMap},
+  props: ["fields", "marker"],
     data() {
         return {
             io:{},
@@ -482,13 +485,14 @@ export default {
                     class: "autre",
                 },
             ],
+            classe:[],
             zoom: 6,
             center: "",
             testy:'10/10/2021'
         };
     },
     methods: {
-        deleteFile: function() {
+        deleteFile: function(item) {
             // this.files.splice(this.files.indexOf(item), 1);
             let test = this.filesNames.indexOf(item);
             this.filesNames.splice(this.files.indexOf(item), 1);
@@ -516,6 +520,7 @@ export default {
         },
         submit(e) {
             e.preventDefault();
+            this.fields.classe = this.classe;
             let currentObj = this;
             const fd = new FormData();
             for (let i = 0; i < this.files.length; i++) {
@@ -525,7 +530,7 @@ export default {
             fd.append("fields", JSON.stringify(this.fields));
             fd.append("_method", "PATCH");
             axios
-                .post("/ios/" + this.fields.id, fd, {
+                .post("api/ios/" + this.fields.id, fd, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -548,26 +553,23 @@ export default {
         },
         toggle(classe, text) {
             if (classe.enabled == true) {
-                this.fields.classe.pop(text);
+               // this.classes.pop(text);
+                this.classe.pop(text);
             } else {
-                this.fields.classe.push(text);
+               // this.classes.push(text);
+                this.classe.push(text);
+
             }
             classe.enabled = !classe.enabled;
         },
-        getAlreadyCheckedClasse(io) {
-            var search_tags = io.classe.split(",");
-            var myclass = this.classes;
-            var classeArray = [];
-            for (var i = 0; i < search_tags.length; i++) {
-                myclass.filter(function(elem) {
-                    if (elem.text == search_tags[i]) {
-                        elem.enabled = true;
-                        classeArray.push(search_tags[i]);
-                    }
-                });
-            }
-            return classeArray;
-        },
+        // toggle(classe, text) {
+        //     if (classe.enabled == true) {
+        //         this.fields.classe.pop(text);
+        //     } else {
+        //         this.fields.classe.push(text);
+        //     }
+        //     classe.enabled = !classe.enabled;
+        // },
         deleteme(index) {
             axios
                 .delete("api/io/" + this.fields.id, {
@@ -589,20 +591,47 @@ export default {
         },
         formatClasse(value) {
             var search_tags = value.split(",");
-            var myclass = this.classes;
+           // var myclass = this.classes;
             var classeArray = [];
+            var vue = this;
             for (var i = 0; i < search_tags.length; i++) {
-                myclass.filter(function(elem) {
+                vue.classes.filter(function(elem) {
                     if (elem.text == search_tags[i]) {
                         elem.enabled = true;
                         classeArray.push(search_tags[i]);
+                        vue.classe.push(search_tags[i]);
+                        console.log('hoiuhoi' + vue.classe);
+
                     }
                 });
             }
-            console.log(classeArray);
             return classeArray;
         },
+        // formatClasse(value) {
+        //     var search_tags = value.split(",");
+        //     var myclass = this.classes;
+        //     var classeArray = [];
+        //     for (var i = 0; i < search_tags.length; i++) {
+        //         myclass.filter(function(elem) {
+        //             if (elem.text == search_tags[i]) {
+        //                 elem.enabled = true;
+        //                 classeArray.push(search_tags[i]);
+        //             }
+        //         });
+        //     }
+        //     console.log(classeArray);
+        //     return classeArray;
+        // },
+        addMarker (value) {
+            this.fields.situation = "(" + value.latlng.lng + " " + value.latlng.lat + ")";
+        },
+        ...mapActions({
+            getIo: 'installations/getIO',
+        }),
     },
+    // beforeCreate() {
+    //     this.getIo(this.$route.params.id);
+    // },
     created() {
         this.formatClasse(this.fields.classe);
         this.fields.delete = [];
@@ -615,6 +644,10 @@ export default {
             return this.$store.state.installations.contributors;
 
         },
+        // ...mapGetters({
+        //     fields: 'installations/singleInstallation',
+        //     marker: 'installations/marker'
+        // }),
     },
     filters: {
         formatDate(value) {

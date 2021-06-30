@@ -4,13 +4,10 @@
             <h1 class="m-0">{{ io.lieu_dit }}</h1>
         </header>
         <div id="demo" class="carousel slide" data-ride="carousel">
-            <!--       <ul class="carousel-indicators">
-                  <li data-target="#demo" data-slide-to="{idx}" v-for="(img,idx) in io.media" :class="{ active: idx==0 }"></li>
-            </ul>-->
             <div class="carousel-inner embed-responsive embed-responsive-21by9">
                 <div
                     class="carousel-item embed-responsive-item"
-                    v-for="(img, idx) in io.media"
+                    v-for="(img, idx) in images"
                     :key="idx"
                     :class="{ active: idx == 0 }"
                     v-bind:style="{ backgroundImage: 'url(img/' + img.file_name + ')', backgroundSize: bgSize }"
@@ -249,7 +246,7 @@
 </template>
 <script>
 import moment from "moment";
-import { mapGetters } from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
 
 export default {
@@ -260,6 +257,16 @@ export default {
             images: [],
             bgSize:"contain"
         };
+    },
+    methods:{
+        getImages() {
+            alert(this.$store.state.installations.media.length);
+            if (this.$store.state.installations.media.length < 1) {
+                this.images.push({ file_name: "default.jpg" });
+            }else {
+                this.images= this.media;
+            }
+        },
     },
     filters: {
         formatDate(value) {
@@ -306,7 +313,17 @@ export default {
         }
     },
     mounted() {
-
-    },
+        this.getImages();
+        $(".carousel").carousel({
+            interval: 1000,
+        });
+    }
 };
 </script>
+<style>
+.carousel-item{
+    background-position: center;
+    background-repeat: no-repeat;
+
+}
+</style>
