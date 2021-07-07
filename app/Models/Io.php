@@ -97,7 +97,6 @@ class Io extends Model
     protected $spatialFields = [
         'situation'
     ];
-
     public function setSituationAttribute($myPoint)
     {
             if(is_string($myPoint)){

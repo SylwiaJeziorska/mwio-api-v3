@@ -6,8 +6,8 @@
         <p>
            {{lieu}}
         </p>
-        <p @click="link" >hgiorjopij</p>
-        <a class="voir text-light btn btn-block btn-success" v-bind:href="url">Voir </a>
+        <p @click="link" >Voir</p>
+<!--        <a class="voir text-light btn btn-block btn-success" v-bind:href="url">Voir </a>-->
 
 
     </div>

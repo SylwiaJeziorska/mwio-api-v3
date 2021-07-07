@@ -7,7 +7,7 @@
             <div class="carousel-inner embed-responsive embed-responsive-21by9">
                 <div
                     class="carousel-item embed-responsive-item"
-                    v-for="(img, idx) in images"
+                    v-for="(img, idx) in media"
                     :key="idx"
                     :class="{ active: idx == 0 }"
                     v-bind:style="{ backgroundImage: 'url(img/' + img.file_name + ')', backgroundSize: bgSize }"
@@ -241,12 +241,12 @@
                 <p v-for="item in contributors">{{ item }}</p>
             </div>
         </div>
-        <div v-if="user">for admin</div>
     </div>
 </template>
 <script>
 import moment from "moment";
 import {mapActions, mapGetters} from 'vuex';
+import router from "../../router";
 
 
 export default {
@@ -260,13 +260,14 @@ export default {
     },
     methods:{
         getImages() {
-            alert(this.$store.state.installations.media.length);
+            // alert(this.$store.state.installations.media.length);
             if (this.$store.state.installations.media.length < 1) {
                 this.images.push({ file_name: "default.jpg" });
             }else {
                 this.images= this.media;
             }
         },
+
     },
     filters: {
         formatDate(value) {

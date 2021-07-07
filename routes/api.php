@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\IoController;
 use App\Http\Controllers\PartnerController;
+use App\Models\Io;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
@@ -22,6 +23,20 @@ use App\Http\Controllers\Auth\RegisterController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('/csv', function () {
+    $table = Io::all();
+    $output = '';
+    foreach ($table as $row) {
+        $output .= implode(",", $row->toArray());
+    }
+    $headers = array(
+        'Content-Type' => 'text/csv',
+        'Content-Disposition' => 'attachment; filename="ExportFileName.csv"',
+    );
+
+    return Response::make(rtrim($output, "\n"), 200, $headers);
+})->name('csv');
 Route::resource('ios',IoController::class) ;
 
 Route::group([
@@ -39,6 +54,7 @@ Route::group(['prefix'=> 'auth', 'namespace' => 'Auth'], function (){
         Route::get('logout', [LoginController::class, 'logout']);
         Route::get('user', [UserController::class,'show']);
         Route::post('update', [UserController::class,'update']);
+        Route::post('index', [UserController::class,'index']);
 
     });
 });

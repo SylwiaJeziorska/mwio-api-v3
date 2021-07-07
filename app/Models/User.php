@@ -24,7 +24,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'verified',
-        'role'
+        'role',
+        'banni'
     ];
 
     /**
@@ -45,4 +46,14 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the user's role in lower cases.
+     *
+     * @return string
+     */
+    public function getRoleAttribute($value)
+    {
+        return strtolower($value);
+    }
 }

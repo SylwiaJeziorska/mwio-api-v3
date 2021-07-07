@@ -12,6 +12,11 @@
             >Installation</router-link
             >
         </li>
-        </nav>
+        <li class="scrolly" href="#header">
+            <router-link
+                :to="{name:'Users'}"
+            >Users</router-link
+            >
+        </li>
     </div>
 </template>

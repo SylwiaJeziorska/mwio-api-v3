@@ -4,6 +4,7 @@ import installations from "./installations";
 import partners from "./partners";
 import auth from "./auth";
 import mapState from "./mapState";
+import users from "./users";
 
 Vue.use(Vuex)
 
@@ -19,6 +20,7 @@ export default new Vuex.Store({
         installations,
         mapState,
         auth,
-        partners
+        partners,
+        users
     }
 })

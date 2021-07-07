@@ -141,6 +141,7 @@ export default {
         },
         async getIO( { commit }, id) {
             commit('SET_IO_BY_ID', id)
+            //end point to get img and users
             await axios.get('api/ios/' + id).then((response) => {
                 commit('SET_IO_MEDIA', response.data[0])
                 commit('SET_CONTRIBUTORS', response.data[1])

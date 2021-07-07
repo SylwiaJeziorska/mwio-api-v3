@@ -7,6 +7,7 @@ export default {
     state: {
         token: null,
         user: null,
+        admin: false,
     },
     getters: {
         authenticated(state) {
@@ -15,6 +16,12 @@ export default {
         user(state) {
             return state.user;
         },
+        admin(state){
+            if(state.user.role == 'admin' || state.user.role == 'super-admin'){
+                return state.admin = true;
+
+            }
+        }
     },
     mutations: {
         SET_TOKEN(state, token) {
@@ -72,8 +79,9 @@ export default {
                 },
                 credentials
             });
-            commit('SET_USER', response.data.user);
-
+            if(response.data.user.id == state.user.id){
+                commit('SET_USER', response.data.user);
+            }
         },
         async sendPasswordLink ({commit},credentials){
              await axios.post('api/password/email', credentials)

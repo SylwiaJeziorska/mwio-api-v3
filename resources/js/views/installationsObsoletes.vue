@@ -168,7 +168,7 @@
                         <div
                             class="col-md-10 offset-md-1 mt-5 mb-5 justify-content-center bg-green"
                         >
-                            <p class="text-uppercase p-2">Partenaires</p>
+                            <p class="text-uppercase p-2">Merci à nos partenaires !</p>
                         </div>
                     </div>
                     <div id="demo" class="carousel slide" data-ride="carousel">
