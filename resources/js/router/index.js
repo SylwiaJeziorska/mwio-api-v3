@@ -8,6 +8,7 @@ import Contact from "../views/Contact";
 //import Admin from "../views/admin";
 //import Installations from "../components/admin/installations/nstallations";
 import Partners from "../components/admin/partners/partners";
+import Users from "../components/admin/users/users";
 import Installations from "../components/admin/installations/installations";
 import Installation from "../components/admin/installations/installation";
 import singleInstallation from "../views/singleInstallation";
@@ -50,6 +51,11 @@ const routes = [
         component: Partners,
     },
     {
+        path: '/Users',
+        name: 'Users',
+        component: Users,
+    },
+    {
         path: '/installationsObsoletes',
         name: 'installationsObsoletes',
         component: installationsObsoletes,
@@ -65,7 +71,7 @@ const routes = [
         component: singleInstallation,
     },
     {
-        path: "/admin/installations",
+        path: "/Admin/installations",
         name: "Installations",
         component: Installations,
     },

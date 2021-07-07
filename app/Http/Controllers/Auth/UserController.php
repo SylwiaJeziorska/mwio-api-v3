@@ -32,10 +32,12 @@ class UserController extends Controller
      * @param  Index  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Index $request)
+    public function index()
     {
-        //return view('pages.membres.index', ['records' => Membre::paginate(10)]);
-    }
+
+        $users = User::all();
+        //dd($users);
+        return response()->json($users);    }
     /**
      * Display the specified resource.
      *
@@ -95,15 +97,14 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
-       // dd($request['credentials']['name']);
+       // dd($request['credentials']['banni']);
         $validatedData = $request->validate([
             'name' => ['string', 'max:255'],
             'password' => ['string', 'min:8', 'confirmed'],
             'prenome' => 'string|max:255|nullable',
 
         ]);
-        $user = $request->user();
-
+        $user = User::find($request['credentials']['id']);
         if(isset($request['credentials']['password'])){
             $validatedData['password'] = bcrypt($request['credentials']['password']);
             $user->update([
@@ -113,6 +114,9 @@ class UserController extends Controller
         $user->update([
             'name' => $request['credentials']['name'],
             'prenome' => $request['credentials']['prenome'],
+            'role' => $request['credentials']['role'],
+            'banni' => $request['credentials']['banni']
+
         ]);
         $user->save();
         return response()->json([

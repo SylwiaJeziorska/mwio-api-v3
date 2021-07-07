@@ -102,7 +102,7 @@ class IoController extends Controller
 
         public function validateIoForAdmin($id){
             $role = Auth::user()->role;
-            if($role == 'Admin' || $role == 'super-admin'){
+            if($role == 'admin' || $role == 'super-admin'){
                 Io::where('id', $id)->update(array('validee' => 1));
             }
         }
