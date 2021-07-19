@@ -1,9 +1,9 @@
 <template>
-    <div class="row">
-        <div class="col-md-3">
+    <div class="row map">
+        <div class="col-md-3 h-100 overflow">
             <new-installation-text :situation="situation"></new-installation-text>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-9 p-0">
             <new-installation-map @clicked="onClickMap"></new-installation-map>
         </div>
     </div>

@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4 overflow h-100">
             <div class="text-col pl-3 vh-100">
                 <form class="form-creat" @submit="submit" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="_token" :value="csrf" />
@@ -382,8 +382,10 @@
                 </form>
                 <div class="row">
                     <div class="col-md-10 offset-md-1">
-                        <input class="btn btn-danger w-100 offset-md-1 mb-2" @click="deleteme(fields.index)" type="button" name="button" value="Suprimer la fiche" />
+                        <input v-if="fields.a_valider < 2" class="btn btn-danger w-100 offset-md-1 mb-2" @click="binIo(fields.index)" type="button" name="button" value="Corbeille la fiche" />
+                        <input v-if="superAdmin & fields.a_valider == 2" class="btn btn-danger w-100 offset-md-1 mb-2" @click="deleteme(fields.index)" type="button" name="button" value="Suprimer la fiche de la corbeille" />
                     </div>
+
                 </div>
             </div>
         </div>
@@ -571,23 +573,10 @@ export default {
         //     classe.enabled = !classe.enabled;
         // },
         deleteme(index) {
-            axios
-                .delete("api/io/" + this.fields.id, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                })
-                .then(function(response) {
-                    //  window.location.href = "/administration-io#";
-                })
-                .catch(function(error) {
-                    console.log(error);
-                    currentObj.output = error;
-                });
-            this.iosColection.splice(index, 1);
-            this.ios = false;
-            this.ioList = true;
-            location.reload();
+            this.deleteme(this.fields.id);
+        },
+        binIo(index) {
+            this.bin(this.fields.id);
         },
         formatClasse(value) {
             var search_tags = value.split(",");
@@ -627,6 +616,8 @@ export default {
         },
         ...mapActions({
             getIo: 'installations/getIO',
+            deleteIo: 'installations/deleteIo',
+            bin: 'installations/bin'
         }),
     },
     // beforeCreate() {
@@ -644,10 +635,10 @@ export default {
             return this.$store.state.installations.contributors;
 
         },
-        // ...mapGetters({
-        //     fields: 'installations/singleInstallation',
-        //     marker: 'installations/marker'
-        // }),
+        ...mapGetters({
+            admin: 'auth/admin',
+            superAdmin: 'auth/superAdmin'
+        }),
     },
     filters: {
         formatDate(value) {

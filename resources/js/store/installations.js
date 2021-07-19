@@ -20,7 +20,8 @@ export default {
         marker: {},
         user: {},
         media: [],
-        contributors: []
+        contributors: [],
+        ioValid: false
 
     },
     getters: {
@@ -36,6 +37,31 @@ export default {
         user(state) {
             return state.user;
         },
+        ioValidated(state){
+            if(state.installations){
+                let collection = state.installations.geojson.features;
+                return collection.filter(function (i) {
+                    return i.properties.validee == '1' && i.properties.a_valider < 2;
+                });
+            }
+        },
+        ioToValidate(state){
+            if(state.installations){
+                let collection = state.installations.geojson.features;
+                return collection.filter(function (i) {
+                    return i.properties.validee == '0'&& i.properties.a_valider < 2;
+                });
+            }
+        },
+        ioFromBin(state){
+            if(state.installations){
+                let collection = state.installations.geojson.features;
+                return collection.filter(function (i) {
+                    return i.properties.a_valider == '2';
+                });
+            }
+        },
+
     },
     mutations: {
         SET_INSTALLATIONS(state, installations){
@@ -147,7 +173,6 @@ export default {
                 commit('SET_CONTRIBUTORS', response.data[1])
             })
         },
-
         async newInstallation ( { commit }, data) {
             await axios.post('api/ios', data, {
                 headers: {
@@ -156,6 +181,41 @@ export default {
             }).then((response) =>{
                 alert('to do for success');
             })
+        },
+        async deleteIo({}, id) {
+            axios
+                .delete("api/ios/" + id, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then(function(response) {
+                    //  window.location.href = "/administration-io#";
+                })
+                .catch(function(error) {
+                    console.log(error);
+                    currentObj.output = error;
+                });
+
+           // location.reload();
+        },
+        async bin({}, id) {
+            axios
+                .post("api/ios/bin/" + id, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then(function(response) {
+                    alert('jopipjoij');
+                    //  window.location.href = "/administration-io#";
+                })
+                .catch(function(error) {
+                    console.log(error);
+                    currentObj.output = error;
+                });
+
+           // location.reload();
         }
     },
 };

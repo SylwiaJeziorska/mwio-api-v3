@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import Main from "../views/MainMap";
 import Home from "../views/Home";
 import installationsObsoletes from "../views/installationsObsoletes";
 import MountainWilderness from "../views/MountainWilderness";
@@ -24,11 +25,15 @@ const routes = [
         path: '/',
         name: 'Home',
         component: Home,
+    },    {
+        path: '/map',
+        name: 'Main',
+        component: Main,
     },
     {
-        path: '/home',
-        name: 'Home',
-        component: Home,
+        path: '/map',
+        name: 'Main',
+        component: Main,
     },
     {
         path: '/PrivacyPolicy',

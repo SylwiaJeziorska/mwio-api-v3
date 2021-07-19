@@ -1,5 +1,5 @@
 <template>
-    <div class="new-io-map mvh-100 order-first order-md-last">
+    <div class="new-io-map">
         <l-map ref="map" :zoom="zoom" :center="center" @click="addMarker">
             <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
             <l-layer-group :visible="true">
@@ -68,6 +68,6 @@ export default {
 </script>
 <style>
 .new-io-map{
-  height: 100vh;
+  height: 100%;
 }
 </style>

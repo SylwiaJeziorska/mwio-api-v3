@@ -1,6 +1,15 @@
 <template>
     <div>
-        <header class="col-md-12 displayio-heading">
+        <ul>
+            <li>
+                <router-link
+                    class="text-dark"
+                    to="/"
+                ><---back</router-link
+                >
+            </li>
+        </ul>
+        <header class="col-md-12">
             <h1 class="m-0">{{ io.lieu_dit }}</h1>
         </header>
         <div id="demo" class="carousel slide" data-ride="carousel">

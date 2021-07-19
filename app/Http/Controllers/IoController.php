@@ -100,12 +100,17 @@ class IoController extends Controller
        // return redirect()->back();
     }
 
-        public function validateIoForAdmin($id){
-            $role = Auth::user()->role;
-            if($role == 'admin' || $role == 'super-admin'){
-                Io::where('id', $id)->update(array('validee' => 1));
-            }
+    /**
+     * Check if user have a rights to validate an Io
+     *
+     * @param user $id
+     */
+    public function validateIoForAdmin($id){
+        $role = Auth::user()->role;
+        if($role == 'admin' || $role == 'super-admin'){
+            Io::where('id', $id)->update(array('validee' => 1));
         }
+    }
 
 //    /**
 //     * Show the form for editing the specified resource.
@@ -152,7 +157,17 @@ class IoController extends Controller
 
 
         return redirect()->back();
-    }    /**
+    }
+
+    /**
+     * Move Io to bin
+     * @param Io $io
+     */
+    public function bin($id){
+        $io = Io::find($id);
+        $io->update(array('a_valider' => 2, 'validee' => 0));
+    }
+    /**
      * Delete a  resource from  storage.
      *
      * @param  Destroy  $request
@@ -162,15 +177,14 @@ class IoController extends Controller
      */
     public function destroy(Destroy $request, Io $io)
     {
-        if ($io->delete()) {
-                session()->flash('app_message', 'Io successfully deleted');
-            } else {
-                session()->flash('app_error', 'Error occurred while deleting Io');
-            }
-
-        return redirect()->back();
+        $io->delete();
+       // return redirect()->back();
     }
 
+    /**
+     * @param $medias
+     * @param $io
+     */
     public function crateMedia($medias, $io) {
         foreach ($medias as $images) {
             foreach ($images as $image){
@@ -185,7 +199,6 @@ class IoController extends Controller
                 $img->type = 'img';
                 $img->save();
             }
-
 
         }
     }

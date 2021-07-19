@@ -1,24 +1,19 @@
 <template>
-    <div class="container-fluid">
-        <ul>
-            <li class="scrolly" href="#header">
-                <router-link
-                    to="/"
-                ><---</router-link
-                >
-            </li>
-        </ul>
-        <div v-if="user" @click="test">UPDATE for admin</div>
-
+    <div class="map">
         <installation v-if="update" :fields="io.properties" :marker="marker"></installation>
 
-        <div v-else class="row m-0">
-            <div class="col-md-4 p-0">
-                <div class="text-col vh-100">
+        <div v-else class="row h-100">
+            <div class="col-md-3 overflow h-100">
+                <div class="text-col">
+                    <ul class="mt-5 pt-3">
+                        <li v-if="admin || superAdmin" @click="updateIo">
+                            <a>UPDATE</a>
+                        </li>
+                    </ul>
                     <single-installation-text v-if="display" :io="io.properties"></single-installation-text>
                 </div>
             </div>
-            <div class="col-md-8 p-0">
+            <div class="col-md-9 p-0">
             <single-installation-map v-if="display" :io="io" :lat-lng="marker"></single-installation-map>
             </div>
         </div>
@@ -53,7 +48,7 @@ export default {
         ...mapActions({
             getIo: 'installations/getIO',
         }),
-        test(){
+        updateIo(){
             this.update = true;
             // router.push({ name: 'singleInstallation', params: { id: this.id } })
         }
@@ -70,7 +65,9 @@ export default {
             io: 'installations/singleInstallation',
             marker: 'installations/marker',
             user: 'auth/user',
-            admin:'auth/admin'
+            admin:'auth/admin',
+            superAdmin: 'auth/superAdmin'
+
         }),
 
     },

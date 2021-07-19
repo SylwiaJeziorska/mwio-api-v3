@@ -1,17 +1,16 @@
 <template>
-    <div class="container-fluid">
-        <div class="io-container mvh-100 d-flex">
-            <div id='filters' class="desktop mvh-100 form-group">
-                <h1 class="text-col-title">Rechercher une installation </br> obsolète</h1>
-                <div class="row justify-content-center">
-                    <label>recherche</label>
+    <div class="pt-5">
+        <div class="d-flex pt-5 filters">
+            <div class="form-group">
+                <h1>Rechercher une installation </br> obsolète</h1>
+                <div class="row justify-content-center mt-5">
+                    <p class="rs-label"><span>Recherche</span></p>
                     <input type="text" v-model="search" @click="addFilterElement(search, 5)"/>
-                  </div>
-                <div  @click="filterLayers">
-                <div class="filter-criteria">
-
+                </div>
+                <div @click="filterLayers">
+                <div>
                     <p class="rs-label"> <span>Statut </span> </p>
-                    <div class="row justify-content-center statut">
+                    <div class="row justify-content-center">
                         <input id="green" type="button" value="Démontée" :class="{highlight:selected.includes('Démontée'), green:filter}" @click="addFilterElement('1',0);
                         selected.includes('Démontée') ? selected.splice(selected.indexOf('Démontée'), 1) : selected.push('Démontée')">
                         <input id="orange" type="button" value="Non démontée" :class="{highlight:selected.includes('Montée'), orange:filter}" @click="addFilterElement('0',0);
@@ -29,15 +28,15 @@
                         <input v-for="(type, index) in types" :class="{highlight:selected.includes(index)}" type="button" v-bind:value="type" @click="addFilterElement(type,2);
                         selected.includes(index) ? selected.splice(selected.indexOf(index), 1) : selected.push(index)">
                     </div>
-                    <p class="rs-label"> <span>Amp...  </span> </p>
+                    <p class="rs-label"> <span>Ampleur</span> </p>
                     <div class="row justify-content-center">
-                        <input v-for="(type, index) in ampleur" :class="{highlight:selected.includes(index)}" type="button" v-bind:value="type" @click="addFilterElement(type,3);
-                        selected.includes(index) ? selected.splice(selected.indexOf(index), 1) : selected.push(index)">
+                        <input v-for="(type, index) in ampleur" :class="{highlight:selected.includes(type)}" type="button" v-bind:value="type" @click="addFilterElement(type,3);
+                        selected.includes(type) ? selected.splice(selected.indexOf(index), 1) : selected.push(type)">
                     </div>
-                    <p class="rs-label"> <span>Impact...  </span> </p>
+                    <p class="rs-label"> <span>Impact </span> </p>
                     <div class="row justify-content-center">
-                        <input v-for="(type, index) in impact" :class="{highlight:selected.includes(index)}" type="button" v-bind:value="type" @click="addFilterElement(type,4);
-                        selected.includes(index) ? selected.splice(selected.indexOf(index), 1) : selected.push(index)">
+                        <input v-for="(type, index) in impact" :class="{highlight:filterCheckedModel[4].includes(type)}" type="button" v-bind:value="type" @click="addFilterElement(type,4);
+                        filterCheckedModel[4].includes(type) ? filterCheckedModel[4].splice(filterCheckedModel[4].indexOf(index), 1) : filterCheckedModel[4].push(type)">
                     </div>
                 </div>
             </div>
@@ -49,6 +48,8 @@
 
 <script>
 
+import moment from "moment";
+
 export default {
     name: "filterOption",
     components: {
@@ -56,10 +57,10 @@ export default {
     },
     data: function() {
         return {
-            ampleur: ['0','1', '2'],
+            ampleur: ['Faible','Moyenne', 'Fore'],
             filter: true,
             filterCheckedModel: [[], [], [], [], [], []],
-            impact: ['0','1', '2'],
+            impact: ['Faible','Moyenne', 'Fore'],
             selected: [],
             search:'',
             origines: ['Touristique', 'Agricole', 'Industrielle', 'Routiere', 'Militaire', 'Inconnue'],
@@ -100,8 +101,20 @@ export default {
             $(".close-filters").hide();
         },
         addFilterElement: function(element, group) {
+            console.log(group);
+            console.log(element);
+            if (group == 4){
+                if (this.filterCheckedModel[group].includes(element)) {
+                    var index = this.filterCheckedModel[group].indexOf(element);
+                    this.filterCheckedModel[group].splice(index, 1);
+                }else{
+                    this.filterCheckedModel[group].push(element).toString();
+                }
+            }
             if (this.filterCheckedModel[group].includes(element)) {
+
                 var index = this.filterCheckedModel[group].indexOf(element);
+
                 this.filterCheckedModel[group].splice(index, 1);
             } else if ( group != 5){
                 this.filterCheckedModel[group].push(element);
@@ -141,7 +154,17 @@ export default {
                 this.filterCheckedModel[5] = [];
                 this.filterLayers();
             }
+        },
+        filterCheckedModel: function (test){
+            this.filters();
         }
+    },
+    filters: {
+        impact(value) {
+            if (value) {
+                return moment(String(value)).format("MM/DD/YYYY");
+            }
+        },
     }
 }
 

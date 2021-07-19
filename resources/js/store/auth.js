@@ -6,8 +6,9 @@ export default {
     namespaced: true,
     state: {
         token: null,
-        user: null,
+        user: false,
         admin: false,
+        superAdmin:false
     },
     getters: {
         authenticated(state) {
@@ -17,9 +18,13 @@ export default {
             return state.user;
         },
         admin(state){
-            if(state.user.role == 'admin' || state.user.role == 'super-admin'){
+            if(state.user.role == 'admin'){
                 return state.admin = true;
-
+            }
+        },
+        superAdmin(state){
+            if(state.user.role == 'super-admin'){
+                return state.superAdmin = true;
             }
         }
     },
@@ -29,6 +34,8 @@ export default {
         },
         SET_USER(state, data) {
             state.user = data;
+            state.admin = data;
+            state.superAdmin = data;
         },
     },
     actions: {

@@ -1,5 +1,5 @@
 <template>
-    <div id="updateIo" v-if="io">
+    <div class="h-100" v-if="io">
         <l-map ref="map" :zoom="zoom" :center="center">
             <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
             <l-marker v-if="io" :lat-lng="latLng" :draggable="true" @drag="updateCoordinates"></l-marker>
@@ -43,8 +43,4 @@ export default {
 
 };
 </script>
-<style>
-#updateIo{
-    height: 80vh;
-}
-</style>
+

@@ -2,7 +2,7 @@
     <div class="container-fluid app-main">
         <nav-component></nav-component>
         <router-view></router-view>
-
+        <footer-component></footer-component>
     </div>
 </template>
 
@@ -10,9 +10,10 @@
 import NavComponent from './components/NavComponent';
 import { mapActions } from 'vuex';
 import { mapGetters } from 'vuex';
+import footerComponent from "./components/footerComponent";
 
     export default {
-        components: {NavComponent},
+        components: {footerComponent, NavComponent},
         mounted() {
             this.getInstallations();
             //this.$store.state.installations.user = this.$attrs.user;

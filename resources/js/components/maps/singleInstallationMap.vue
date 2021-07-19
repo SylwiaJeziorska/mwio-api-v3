@@ -1,5 +1,5 @@
 <template>
-    <div id="oneio" v-if="io">
+    <div id="oneio" v-if="io" class="h-100">
         <l-map ref="map" :zoom="zoom" :center="center">
             <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
             <l-marker v-if="io" :lat-lng="latLng"></l-marker>
@@ -34,6 +34,6 @@ export default {
 </script>
 <style>
 #oneio{
-    height: 80vh;
+    height: 100%;
 }
 </style>

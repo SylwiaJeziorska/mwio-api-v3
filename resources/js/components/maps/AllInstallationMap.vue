@@ -1,6 +1,5 @@
 <template>
-    <div>
-        <div id="ios">
+        <div id="ios" class="h-100">
             <l-map ref="map" :zoom="zoom" :center="center">
                 <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
                 <l-geo-json
@@ -11,7 +10,6 @@
                 ></l-geo-json>
             </l-map>
         </div>
-    </div>
 </template>
 
 <script>
@@ -43,7 +41,5 @@ export default {
 };
 </script>
 <style scoped>
-#ios {
-    height: 82vh;
-}
+
 </style>

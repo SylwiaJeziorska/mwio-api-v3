@@ -72,8 +72,6 @@ export default {
         }
 
     },
-    created() {
-    },
     computed: {
         ...mapGetters({
             storeBannedUsers: 'users/bannedUsers',

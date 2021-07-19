@@ -112,6 +112,25 @@ class Io extends Model
         $this->attributes['classe'] = implode(',', (array) $value);
     }
 
+    public  function getImpactAttribute($value){
+        if($value == 0){
+            return 'Faible';
+        }elseif ($value == '1'){
+            return 'Moyenne';
+        }else{
+            return 'Fort';
+        }
+    }
+    public  function getAmpleurAttribute($value){
+        if($value == 0){
+            return 'Faible';
+        }elseif ($value == '1'){
+            return 'Moyenne';
+        }else{
+            return 'Fort';
+        }
+    }
+
     public function user()
     {
         return $this->belongsToMany(User::class, 'io_user', 'io_id', 'user_id');

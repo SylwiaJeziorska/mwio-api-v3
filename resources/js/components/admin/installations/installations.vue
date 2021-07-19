@@ -30,7 +30,7 @@ import { mapGetters } from 'vuex';
     iosCollection: 'installations/installations',
     io: 'installations/singleInstallation',
     marker: 'installations/marker'
-}),
+    }),
 }
 }
 </script>
